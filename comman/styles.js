@@ -141,7 +141,7 @@ export const Styles = StyleSheet.create({
         fontSize:12,
     },
     text12M:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Medium", 
         fontSize:12,
     },
     text12RCGM:{
@@ -174,38 +174,44 @@ export const Styles = StyleSheet.create({
         paddingTop:2
     },
     text14SB:{
-        fontFamily:"Helvetica-Bold", 
+        fontFamily:"Outfit-SemiBold", 
         fontSize:14,
+        color:color.black,
     },
     text14B:{
-        fontFamily:"Helvetica-Bold", 
+        fontFamily:"Outfit-Bold", 
         fontSize:14,
         color:color.black
     },
     text14R:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Regular", 
         fontSize:14,
         color:color.black
     },
     text14M:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Medium", 
         fontSize:14,
     },
     text16B:{
-        fontFamily:"Helvetica-Bold", 
+        fontFamily:"Outfit-Bold", 
         fontSize:16,
         color:color.black
     },
+    text30B:{
+        fontFamily:"Outfit-Bold", 
+        fontSize:30,
+        color:color.black
+    },
     text16LB:{
-        fontFamily:"Helvetica-Bold", 
+        fontFamily:"Outfit-Bold", 
         fontSize:16,
     },
     text16R:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit", 
         fontSize:16,
     },
     text16M:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Medium", 
         fontSize:16,
         color:color.black
     },
@@ -214,32 +220,32 @@ export const Styles = StyleSheet.create({
         fontSize:18,
     },
     text18SB:{
-        fontFamily:"Helvetica-Bold",  
+        fontFamily:"Outfit-Bold",  
         fontSize:18,
     },
     text18M:{
-        fontFamily:"Helvetica",  
+        fontFamily:"Outfit-Medium",  
         fontSize:18,
     },
     text15L:{
-        fontFamily:"Helvetica-light", 
+        fontFamily:"Outfit-light", 
         fontSize:15,
         color:color.black
     },
     text10L:{
-        fontFamily:"Helvetica-light", 
+        fontFamily:"Outfit-light", 
         fontSize:10,
     },
     text10M:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Medium", 
         fontSize:10,
     },
     text15R:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit", 
         fontSize:15,
     },
     text15B:{
-        fontFamily:"Helvetica-Bold", 
+        fontFamily:"Outfit-Bold", 
         fontSize:15,
     },
     text15RCB:{
@@ -253,19 +259,19 @@ export const Styles = StyleSheet.create({
         color:color.white
     },
     text15M:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Medium", 
         fontSize:15,
     },
     text20M:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit-Medium", 
         fontSize:20,
     },
     text20SM:{
-        fontFamily:"Helvetica-Bold", 
+        fontFamily:"Outfit-Bold", 
         fontSize:20,
     },
     text20R:{
-        fontFamily:"Helvetica", 
+        fontFamily:"Outfit", 
         fontSize:20,
     },
     text10R:{
@@ -273,12 +279,12 @@ export const Styles = StyleSheet.create({
         fontSize:10,
     },
     text22SB:{
-        fontFamily:"Helvetica-Bold",
+        fontFamily:"Outfit-Bold",
         fontSize:22,
         color:color.black
     },
     text22B:{
-        fontFamily:"Helvetica-Bold",
+        fontFamily:"Outfit-Bold",
         fontSize:22,
         color:color.black
     },

@@ -11,7 +11,7 @@ const Buttons = ({name, onPress,isTrue}) => {
   return (
     <TouchableOpacity style={styles.button} onPress={()=>onPress()} >
         <VerticalBox style={5} />
-        <Text style={[Styles.text16B,{color:color.white}]}>
+        <Text style={[Styles.text16M,{color:color.white}]}>
             {name}
         </Text>
         <VerticalBox style={5} />

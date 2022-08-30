@@ -11,7 +11,7 @@ export const color = {
     navColor:"#4C4C4C",
     otpColor:"#CBCED5",
     greyMedium : '#535353',
-    greyLite : '#635959',
+    greyLite : '#8B8B8B',
     borderInput:"#ECECEC",
     white:"#ffffff",
     whiteLite: "#F3F3F3",

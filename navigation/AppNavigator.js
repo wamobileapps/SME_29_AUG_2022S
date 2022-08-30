@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import navigation from '../comman/navigation';
+import RagistrationScreen from '../screens/Auth/RagistrationScreen';
 
 const Stack = createStackNavigator();
 // const Drawer = createDrawerNavigator();
@@ -28,6 +29,7 @@ export const AppNavigator = props => {
         >
        <Stack.Screen name={navigation.SplashScreen} component={SplashScreen} />
        <Stack.Screen name={navigation.LoginScreen} component={LoginScreen} />
+       <Stack.Screen name="RagistrationScreen" component={RagistrationScreen} />
        {/* <Stack.Screen name="TabsScreenD" component={TabsScreenD} /> */}
        {/* <Stack.Screen name="TabsScreenD" component={TabsScreenD} /> */}
     
