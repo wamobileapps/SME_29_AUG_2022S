@@ -1,6 +1,6 @@
 
 export const color = {
-    primary : '#7bb062',
+    primary : '#2DBAE5',
     secondary : '#9762b0',
     dFirst:"#44B9EB",
     lightPrimay:"#8aa2cf",
@@ -20,4 +20,5 @@ export const color = {
     green:'#369514',
     red:"#AB1111",
     placeholder:"#C7C7CD",
+    border:"#E3E3E3"
 }
