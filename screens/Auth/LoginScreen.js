@@ -44,6 +44,7 @@ const LoginScreen = props => {
         resizeMode="stretch"
       >
         <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -80,7 +81,7 @@ const LoginScreen = props => {
             }
           />
           <PaddingBox style={scale(20)} />
-          <View style={[Styles.alignbetween, {width: wp(90)}]}>
+          <View style={[Styles.alignbetween, {width: wp(85)}]}>
             <View style={Styles.row}>
               <TouchableOpacity onPress={() => setcheckbox(!checkbox)}>
                 {checkbox ? (

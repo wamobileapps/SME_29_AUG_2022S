@@ -31,7 +31,7 @@ const TextInputView = (props) => {
         </View>
       </View>
       {props.rightIcon  &&
-            <TouchableOpacity style={{...styles.leftIcon, ...styles.right}}>
+            <TouchableOpacity style={{...styles.right}}>
             <Image 
               source={images.EYE}
               style={styles.leftStyle}
@@ -46,7 +46,7 @@ export default TextInputView
 
 const styles = StyleSheet.create({
   container:{
-    width:wp(90),
+    width:wp(85),
     borderWidth:1,
     height:scale(60),
     borderColor:color.border,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   textinput:{
     width:"100%",
     padding:0,
-    ...Styles.text14R
+    ...Styles.text14R,
   },
   right:{
     position:"absolute",

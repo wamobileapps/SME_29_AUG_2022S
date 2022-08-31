@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     button:{
         paddingHorizontal:scale(20),
         height:scale(50),
-        width:wp(90),
+        width:wp(85),
         backgroundColor:color.primary,
         alignItems:"center",justifyContent:"space-between",
         flexDirection:"row",
