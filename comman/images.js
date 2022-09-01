@@ -5,6 +5,7 @@ export default {
     PHONE:require("../assets/phone.png"),
     DOCUSER:require("../assets/docuser.png"),
     EYE:require("../assets/Eye.png"),
+    CEYE:require("../assets/ceye.png"),
     LIFTLINE:require("../assets/leftline.png"),
     RIGHTLINE:require("../assets/rightLine.png"),
     GOOGLE:require("../assets/google.png"),

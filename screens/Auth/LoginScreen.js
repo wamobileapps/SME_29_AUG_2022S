@@ -26,18 +26,105 @@ import Button from '../../components/Button';
 import Buttons from '../../components/Buttons';
 import {color} from '../../comman/theme';
 import navigation from '../../comman/navigation';
-const height = Dimensions.get("screen").height
+import UserPool from '../../congnito/UserPool';
+import {CognitoUser, AuthenticationDetails} from 'amazon-cognito-identity-js';
+import Loader from '../../comman/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const height = Dimensions.get('screen').height;
 
 const LoginScreen = props => {
   const [checkbox, setcheckbox] = useState(false);
+  const [mobile, setmobile] = useState('');
+  const [password, setpassword] = useState('');
+  const [isEye, setisEye] = useState(true);
+  const [loading, setloading] = useState(false)
 
   useEffect(() => {
-    console.log(height);
-  }, [])
-  
+    onGetIniData();
+  }, []);
+
+  const onGetIniData = async() =>{
+        let data =await AsyncStorage.getItem("data");
+        if(data != null){
+          let d= JSON.parse(data);
+          setmobile(d.mobile)
+          setpassword(d.password)
+          setcheckbox(true)
+        }
+  } 
+
+
+  const onValidateForm = () => {
+    if (mobile.trim() == '') {
+      alert('Please enter phone number');
+      return false;
+    }  else if (password.trim() == '') {
+      alert('Please enter password');
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const onLoginUserWithAWS = () => {
+     
+    let isValid = onValidateForm();
+    if (!isValid) {
+      return;
+    }
+    setloading(true)
+
+    
+    const user = new CognitoUser({
+      Username: mobile,
+      Pool: UserPool,
+    });
+
+    const authDetails = new AuthenticationDetails({
+      Username: mobile,
+      Password: password,
+    });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: result => {
+        setloading(false)
+        console.log('onSuccess', result);
+        alert("Login Successfully.")
+
+        if(checkbox){
+          let data={
+            mobile,
+            password
+          }
+            AsyncStorage.setItem("data",JSON.stringify(data))
+        } 
+        props.navigation.navigate(navigation.HomeScreen, result)
+      },
+      onFailure: err => {
+        console.log('====================================');
+        console.log(err);
+        console.log('====================================');
+        if(err.code == "UserNotConfirmedException"){
+          alert("Please contact to Admin. User is not verifyed.")
+        }
+        else if(err.code == "NotAuthorizedException"){
+          alert("Please enter valid password.")
+        }else{
+          alert(err.message)
+
+        }
+        setloading(false)
+      },
+    });
+  };
+    
+
+
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={color.white} barStyle="dark-content" />
+      <Loader loading={loading} />
       <ImageBackground
         source={images.BACKGROUD}
         style={styles.imageBg}
@@ -55,28 +142,36 @@ const LoginScreen = props => {
           <PaddingBox style={scale(10)} />
           <Text style={Styles.text30B}>Welcome Back</Text>
           <PaddingBox style={scale(5)} />
-          <Text style={[Styles.text14R,{color:color.greyLite}]}>Please login to continue</Text>
+          <Text style={[Styles.text14R, {color: color.greyLite}]}>
+            Please login to continue
+          </Text>
           <PaddingBox style={scale(20)} />
           <TextInputView
             leftIcon={images.PHONE}
             heading="Phone number"
             placeholder={'Your phone number'}
-            style={{}}
+            keyboardType="phone-pad"
+            value={mobile}
+            onChangeText={(t)=>setmobile(t)}
           />
           <PaddingBox style={scale(20)} />
           <TextInputView
             leftIcon={images.LOCK}
             heading="Password"
-            secureTextEntry={true}
+            secureTextEntry={isEye}
             rightIcon={true}
+            onChangeSecureText={()=>setisEye(!isEye)}
             placeholder={'Enter your password'}
-            style={{}}
-            onChangeText={() => {}}
+            value={password}
+            onChangeText={(t)=>setpassword(t)}
           />
           <PaddingBox style={scale(20)} />
           <Buttons
             name="Login"
-            onPress={() =>{}
+            onPress={
+              () => {
+                onLoginUserWithAWS()
+              }
               // props.navigation.navigate(navigation.RagistrationScreen)
             }
           />
@@ -108,7 +203,15 @@ const LoginScreen = props => {
           <PaddingBox style={scale(20)} />
           <View style={styles.signUp}>
             <Image source={images.LIFTLINE} />
-            <Text style={{paddingHorizontal: 10,color:"#555252",...Styles.text14M}}>Or Sign up With</Text>
+            <Text
+              style={{
+                paddingHorizontal: 10,
+                color: '#555252',
+                ...Styles.text14M,
+              }}
+            >
+              Or Sign up With
+            </Text>
             <Image source={images.RIGHTLINE} />
           </View>
           <PaddingBox style={scale(20)} />
@@ -121,7 +224,14 @@ const LoginScreen = props => {
           <Center>
             <Text style={Styles.text14R}>
               Don’t have an Account?
-              <Text style={{color: color.primary}} onPress={()=>  props.navigation.navigate(navigation.RagistrationScreen)}>{` `} Sign UP</Text>
+              <Text
+                style={{color: color.primary}}
+                onPress={() =>
+                  props.navigation.navigate(navigation.RagistrationScreen)
+                }
+              >
+                {` `} Sign UP
+              </Text>
             </Text>
           </Center>
         </ScrollView>
