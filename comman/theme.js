@@ -1,5 +1,6 @@
 
 export const color = {
+    arrow:"#9095A1FF",
     primary : '#2DBAE5',
     secondary : '#9762b0',
     dFirst:"#44B9EB",
@@ -20,5 +21,6 @@ export const color = {
     green:'#369514',
     red:"#AB1111",
     placeholder:"#C7C7CD",
-    border:"#E3E3E3"
+    border:"#E3E3E3",
+    textColor:"#565D6DFF",
 }

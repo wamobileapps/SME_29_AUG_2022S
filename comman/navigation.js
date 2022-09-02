@@ -3,4 +3,5 @@ export default {
     LoginScreen:"LoginScreen",
     RagistrationScreen:"RagistrationScreen",
     HomeScreen:"HomeScreen",
+    BottomTabs:"BottomTabs",
 }

@@ -4,25 +4,15 @@ import { color } from '../comman/theme';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { VerticalBox } from '../comman/alignBox';
 import { Styles } from '../comman/styles';
+import { scale } from 'react-native-size-matters';
+import { widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-const Button = ({name, onPress, right, isTrue}) => {
+const Button = ({name, onPress,isTrue}) => {
   return (
-    <TouchableOpacity style={isTrue?styles.button:styles.button1} onPress={()=>onPress()}>
-      {right &&
-      <>
-         <Ionicons name="ios-arrow-back-sharp" size={24} color="white" />
-         <VerticalBox style={5} />
-      </>}
-        <Text style={[Styles.text14B,{color:color.white}]}>
+    <TouchableOpacity style={styles.button} onPress={()=>onPress()} >
+        <Text style={[Styles.text14MR,{color:color.white,}]}>
             {name}
         </Text>
-        <VerticalBox style={5} />
-        {!right &&
-      <>
-           <VerticalBox style={5} />
-         <Ionicons name="md-arrow-forward" size={24} color="white" />
-      </>}
-      
     </TouchableOpacity>
   )
 }
@@ -31,21 +21,12 @@ export default Button
 
 const styles = StyleSheet.create({
     button:{
-        paddingHorizontal:20,
-        height:40,
+        height:scale(40),
+        width:wp(25),
         backgroundColor:color.primary,
-        alignItems:"center",justifyContent:"space-between",
+        alignItems:"center",
+        justifyContent:"center",
         flexDirection:"row",
-        borderRadius:5,
-
+        borderRadius:scale(5),
     },
-    button1:{
-      paddingHorizontal:20,
-      height:40,
-      backgroundColor:color.otpColor,
-      alignItems:"center",justifyContent:"space-between",
-      flexDirection:"row",
-      borderRadius:5,
-
-  }
 })

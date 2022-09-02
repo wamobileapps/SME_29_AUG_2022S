@@ -11,4 +11,5 @@ export default {
     GOOGLE:require("../assets/google.png"),
     FB:require("../assets/fb.png"),
     TW:require("../assets/tw.png"),
+    DOC:require("../assets/doc.png"),
 }

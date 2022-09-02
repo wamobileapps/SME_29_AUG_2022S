@@ -9,6 +9,7 @@ import {
   StatusBar,
   ScrollView,
   Dimensions,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Styles} from '../../comman/styles';
@@ -90,8 +91,8 @@ const LoginScreen = props => {
       onSuccess: result => {
         setloading(false)
         console.log('onSuccess', result);
-        alert("Login Successfully.")
-
+        // alert("Login Successfully.")
+        ToastAndroid.show("Login Successfully.", ToastAndroid.SHORT);
         if(checkbox){
           let data={
             mobile,
@@ -99,7 +100,7 @@ const LoginScreen = props => {
           }
             AsyncStorage.setItem("data",JSON.stringify(data))
         } 
-        props.navigation.navigate(navigation.HomeScreen, result)
+        props.navigation.navigate(navigation.BottomTabs, result)
       },
       onFailure: err => {
         console.log('====================================');

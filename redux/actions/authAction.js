@@ -1,44 +1,36 @@
-export const REGISTER_USER_FAIL = 'REGISTER_USER_FAIL';
-export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
-import axios from 'axios';
+export const GET_MEDICINE_SUCCESS = 'GET_MEDICINE_SUCCESS';
+export const GET_MEDICINE_FAIL = 'GET_MEDICINE_FAIL';
 
-export const BASE_URL = '';
 
-export const SubmitClusterData = (token,data) => {
-  var myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
+export const BASE_URL = 'http://ec2-44-211-73-168.compute-1.amazonaws.com:8080/api/v1/medicine';
+
+export const getMedicineData = (token,data) => {
+  var raw = "";
+
   var requestOptions = {
-    headers: myHeaders,
-    method: 'POST',
-    body: JSON.stringify(data),
-    redirect: 'follow',
+    method: 'GET',
+    body: raw,
+    redirect: 'follow'
   };
-
   var result = [];
   return async dispatch => {
-    // logic to make a post to REGISTER the user
     try {
-      const data = await fetch(`${BASE_URL}/save-input1/${token}`, requestOptions).then(
-        response => response.json(),
-      );
-      if (data.success) {
+      const data = await fetch(BASE_URL, requestOptions)
+        .then(response => response.json())
+      if (data.length != 0) {
         dispatch({
-          type: SAVE_CLUSTER_SUCCESS,
+          type: GET_MEDICINE_SUCCESS,
           payload: data,
         });
       } else {
         dispatch({
-          type:  SAVE_CLUSTER__FAIL,
+          type:  GET_MEDICINE_FAIL,
           payload: data,
         });
       }
       return data;
     } catch (error) {
       console.log(error);
-      dispatch({
-        type: SAVE_CLUSTER__FAIL,
-        payload: false,
-      });
       return {success: false};
     }
   };

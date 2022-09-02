@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text , StyleSheet} from 'react-native'
+import { scale } from 'react-native-size-matters'
 
 
 
@@ -13,7 +14,7 @@ export const VerticalBox = (props) => {
 
 export const PaddingBox = (props) => {
     return (
-        <View style={{height:props.style}}>
+        <View style={{height:props.style?props.style:scale(10)}}>
         
         </View>
     )
@@ -65,7 +66,7 @@ export  class Right extends React.Component {
 
 const styles = StyleSheet.create({
     box: {
-        paddingHorizontal:20
+        paddingHorizontal:scale(20)
     },
     center:{
         alignSelf:"center",

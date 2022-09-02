@@ -140,6 +140,11 @@ export const Styles = StyleSheet.create({
         fontFamily:"Helvetica-light", 
         fontSize:12,
     },
+    text12MB:{
+        fontFamily:"Mulish-Regular", 
+        fontSize:12,
+        color:color.black
+    },
     text12M:{
         fontFamily:"Outfit-Medium", 
         fontSize:12,
@@ -183,6 +188,26 @@ export const Styles = StyleSheet.create({
         fontSize:14,
         color:color.black
     },
+    text14MU:{
+        fontFamily:"Mulish-Black", 
+        fontSize:14,
+        color:color.black
+    },
+    text14MR:{
+        fontFamily:"Mulish-Regular", 
+        fontSize:14,
+        color:color.black
+    },
+    text14SOR:{
+        fontFamily:"Sora-Regular", 
+        fontSize:14,
+        color:color.black
+    },
+    text14SOB:{
+        fontFamily:"Sora-Bold", 
+        fontSize:14,
+        color:color.black
+    },
     text14R:{
         fontFamily:"Outfit-Regular", 
         fontSize:14,
@@ -195,6 +220,11 @@ export const Styles = StyleSheet.create({
     text16B:{
         fontFamily:"Outfit-Bold", 
         fontSize:16,
+        color:color.black
+    },
+    text18SOB:{
+        fontFamily:"Sora-Bold", 
+        fontSize: 18,
         color:color.black
     },
     text30B:{

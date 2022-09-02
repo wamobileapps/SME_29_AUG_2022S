@@ -1,9 +1,13 @@
-import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, SafeAreaView, } from 'react-native';
+import React,{useEffect} from 'react';
 import { Styles } from '../comman/styles';
 
 const SplashScreen = props => {
+    useEffect(() => {
+     props.navigation.navigate("MyTabs");
 
+    }, [])
+    
   
   return (
     <SafeAreaView style={Styles.container}>
