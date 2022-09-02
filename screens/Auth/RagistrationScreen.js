@@ -40,8 +40,6 @@ const RagistrationScreen = props => {
   const [loading, setloading] = useState(false);
   const [isPassword, setisPassword] = useState(true);
   const [isCPassword, setisCPassword] = useState(true);
-
-
   const onValidateForm = () => {
     if (mobile.trim() == '') {
       alert('Please enter Phone number');
@@ -83,6 +81,8 @@ const RagistrationScreen = props => {
         } else if (err.code == 'InvalidPasswordException') {
           alert('Please enter valid password');
           console.log(err.message);
+        }else if(err.code == "InvalidParameterException"){
+          alert('Please enter valid phone number.');
         }
       } else {
         alert('Registration Successfully. Please wait for admin approval.');

@@ -23,6 +23,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import DiseasesScreen from '../screens/DashboardScreens/DiseasesScreen';
 
 // const Tabs = createMaterialTopTabNavigator();
 
@@ -87,7 +88,7 @@ function BottomTabs() {
       />
       <Tab.Screen
         name="Diseases"
-        component={HomeScreen}
+        component={DiseasesScreen}
         options={{
           tabBarLabel: 'Diseases',
           tabBarIcon: ({color, size}) => (
@@ -103,7 +104,7 @@ function BottomTabs() {
       />
       <Tab.Screen
         name="Inbox"
-        component={HomeScreen}
+        component={DiseasesScreen}
         options={{
           tabBarLabel: 'Inbox',
           tabBarIcon: ({color, size}) => (
@@ -125,7 +126,7 @@ function BottomTabs() {
       />
       <Tab.Screen
         name="Settings"
-        component={HomeScreen}
+        component={DiseasesScreen}
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => (

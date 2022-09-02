@@ -12,4 +12,5 @@ export default {
     FB:require("../assets/fb.png"),
     TW:require("../assets/tw.png"),
     DOC:require("../assets/doc.png"),
+    NEWSPAPER:require("../assets/newspaper.png"),
 }

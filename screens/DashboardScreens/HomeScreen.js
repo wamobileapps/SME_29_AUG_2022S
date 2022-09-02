@@ -31,7 +31,7 @@ const HomeScreen = props => {
           setisSeeMore(true)
           if(result.length !=0 ){
             setfullData(result);
-            setdata(result.splice(0,3))
+            setdata(result.slice(0,3))
             setloading(false);
           }else{
             setloading(false);
@@ -46,7 +46,7 @@ const HomeScreen = props => {
 
   const onLoadMoreData = () =>{
       try {
-       let newLoad = fullData.splice(offset+3,limit+3);
+       let newLoad = fullData.slice(offset+3,limit+3);
        if(newLoad.length != 0){
         console.log(newLoad.length);
         setdata([...data,...newLoad])
@@ -60,8 +60,6 @@ const HomeScreen = props => {
         
       }
   }
-
-
   
 
   const renderItem = ({item, index}) => (
@@ -106,6 +104,9 @@ const HomeScreen = props => {
         <PaddingBox />
       </Box>
       <TopTabs activeTabs={activeTabs} onChangeTabs={onChangeTabs} />
+      <TouchableOpacity style={styles.floting}>
+          <Image source={images.NEWSPAPER} style={styles.flotingImage} />
+      </TouchableOpacity>
       <FlatList
         data={activeTabs == "A"? History:data}
         renderItem={renderItem}
@@ -115,9 +116,10 @@ const HomeScreen = props => {
         ListHeaderComponent={() => <PaddingBox />}
         ItemSeparatorComponent={() => <PaddingBox />}
         ListFooterComponent={() =>
+          <>
+          {activeTabs == "B" ?
           <View style={styles.footerView}>
             <TouchableOpacity onPress={()=>onLoadMoreData()} style={Styles.row}>
-
             <Text style={[Styles.text14MR,{color:color.primary}]}>
              {isSeeMore ? "See More" :"No More"  }  
              </Text>
@@ -125,6 +127,10 @@ const HomeScreen = props => {
              <MaterialIcons name="keyboard-arrow-down" size={24} color={color.primary} />
             </TouchableOpacity>
           </View>
+          :
+            <PaddingBox />
+          }
+          </>
         }
       />
     </View>
@@ -138,12 +144,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color.white,
   },
+  floting:{
+    position:"absolute",
+    bottom:10,
+    right:10,
+    zIndex:100,
+  },
   footerView:{
     width:"100%",
     alignItems:"center",
     justifyContent:"center",
     flexDirection:"row",
     marginVertical:20,
+  },
+  flotingImage:{
+    width:scale(60),
+    height:scale(60),
   },
   textConatiner:{
     width:"70%",
