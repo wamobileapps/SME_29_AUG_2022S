@@ -23,4 +23,8 @@ export const color = {
     placeholder:"#C7C7CD",
     border:"#E3E3E3",
     textColor:"#565D6DFF",
+    grayModal : '#DEE1E6B3', 
+    descGrayModal: '#F3F4F6FF'
+
+
 }

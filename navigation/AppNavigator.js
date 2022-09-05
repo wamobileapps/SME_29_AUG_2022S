@@ -158,10 +158,12 @@ export const AppNavigator = props => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={navigation.LoginScreen}
+        initialRouteName={navigation.HomeScreen}
       >
+           <Stack.Screen name={navigation.HomeScreen} component={HomeScreen} />
         <Stack.Screen name={navigation.SplashScreen} component={SplashScreen} />
         <Stack.Screen name={navigation.LoginScreen} component={LoginScreen} />
+     
         <Stack.Screen
           name={navigation.RagistrationScreen}
           component={RagistrationScreen}
