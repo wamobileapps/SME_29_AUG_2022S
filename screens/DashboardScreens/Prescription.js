@@ -277,7 +277,7 @@ const Prescription = props => {
   );
 };
 
-export default MedicineDetails;
+export default Prescription;
 
 const styles = StyleSheet.create({
   container: {
