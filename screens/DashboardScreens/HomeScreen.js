@@ -26,6 +26,7 @@ import Loader from '../../comman/Loader';
 import {History} from '../../comman/const';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Toggle from '../../comman/Toggle';
+import navigationName from '../../comman/navigation';
 
 const HomeScreen = props => {
   const dispatch = useDispatch();
@@ -74,7 +75,11 @@ const HomeScreen = props => {
   };
 
   const renderItem = ({item, index}) => (
-    <View style={styles.listContainer}>
+    <TouchableOpacity
+    onPress={()=>{
+     props.navigation.navigate(navigationName.MedicineDetails)
+    }}
+     style={styles.listContainer}>
       <View style={styles.leftSide}>
         <View style={styles.rowList}>
           <View style={styles.imageConatiner}>
@@ -105,7 +110,7 @@ const HomeScreen = props => {
         <PaddingBox />
         <Button name="add" onPress={() => {}} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const MedicineModal = () => {

@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import DiseasesScreen from '../screens/DashboardScreens/DiseasesScreen';
+import MedicineDetails from '../screens/DashboardScreens/MedicineDetails';
 
 // const Tabs = createMaterialTopTabNavigator();
 
@@ -72,7 +73,7 @@ function BottomTabs() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStack}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
@@ -158,12 +159,11 @@ export const AppNavigator = props => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={navigation.HomeScreen}
+        initialRouteName={navigation.LoginScreen}
       >
-           <Stack.Screen name={navigation.HomeScreen} component={HomeScreen} />
-        <Stack.Screen name={navigation.SplashScreen} component={SplashScreen} />
         <Stack.Screen name={navigation.LoginScreen} component={LoginScreen} />
-     
+        <Stack.Screen name={navigation.SplashScreen} component={SplashScreen} />
+        <Stack.Screen name={navigation.MedicineDetails} component={MedicineDetails} />
         <Stack.Screen
           name={navigation.RagistrationScreen}
           component={RagistrationScreen}
@@ -174,5 +174,22 @@ export const AppNavigator = props => {
     </NavigationContainer>
   );
 };
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName={navigation.HomeScreen}>
+        
+        <Stack.Screen name={navigation.HomeScreen} component={HomeScreen} />
+        <Stack.Screen name={navigation.MedicineDetails} component={MedicineDetails} />
+      
+    </Stack.Navigator>
+  );
+};
+
+
 
 export default AppNavigator;

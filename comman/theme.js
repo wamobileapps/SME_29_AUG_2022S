@@ -24,7 +24,10 @@ export const color = {
     border:"#E3E3E3",
     textColor:"#565D6DFF",
     grayModal : '#DEE1E6B3', 
-    descGrayModal: '#F3F4F6FF'
+    descGrayModal: '#F3F4F6FF', 
+    darkGray: '#171A1FFF', 
+    lightGray: '#BDC1CAFF', 
+    red: "#F22128FF"
 
 
 }
