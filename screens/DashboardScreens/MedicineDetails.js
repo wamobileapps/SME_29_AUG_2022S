@@ -28,6 +28,7 @@ import Loader from '../../comman/Loader';
 import {History} from '../../comman/const';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Toggle from '../../comman/Toggle';
+import {widthPercentageToDP} from 'react-native-responsive-screen';
 
 const width = Dimensions.get('window').width;
 
@@ -35,7 +36,7 @@ const MedicineDetails = props => {
   const dispatch = useDispatch();
   const [loading, setloading] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
-  const [selectedItem, setSelectedItem] = useState(2)
+  const [selectedItem, setSelectedItem] = useState(2);
   const imageFlatList = useRef();
 
   useEffect(() => {}, []);
@@ -52,26 +53,35 @@ const MedicineDetails = props => {
   const renderItemText = ({item}) => {
     return (
       <TouchableOpacity
-      onPress={()=>{setSelectedItem(item)}}
+        onPress={() => {
+          setSelectedItem(item);
+        }}
       >
-
-      <Text style={[item == selectedItem?Styles.text14B :Styles.text12MB , {marginTop: 6, color: item == selectedItem ? color.red : color.darkGray}]}>
-      Pregnancy Category
-      </Text>
+        <Text
+          style={[
+            item == selectedItem ? Styles.text14B : Styles.text12MB,
+            {
+              marginTop: 6,
+              color: item == selectedItem ? color.red : color.darkGray,
+            },
+          ]}
+        >
+          Pregnancy Category
+        </Text>
       </TouchableOpacity>
     );
   };
 
   const renderImageItem = ({item}) => {
     return (
-      <View
-        style={styles.imageView}>
+      <View style={styles.imageView}>
         <Image source={images.IMAGE} style={styles.image} />
         <Text
           style={[
             Styles.text14SOR,
             {fontWeight: '800', color: color.black, marginTop: 8},
-          ]}>
+          ]}
+        >
           Medicine Name
         </Text>
       </View>
@@ -105,56 +115,65 @@ const MedicineDetails = props => {
         <SearchBar />
         <PaddingBox />
       </Box>
-      <ScrollView style={styles.subContainer} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerView}>
-          <View style={styles.row}>
-            <Image source={images.IMAGE} style={styles.imageConatiner} />
-            <View style={styles.detailView}>
-              <Text
-                style={[
-                  Styles.text14SOR,
-                  {fontWeight: '800', color: color.black},
-                ]}>
-                Medicine Name
-              </Text>
-              <Text
-                style={[
-                  Styles.text12MB,
-                  {marginTop: 3, color: color.darkGray},
-                ]}>
-                Sceintific name
-              </Text>
-              <Text
-                style={[
-                  Styles.text12MB,
-                  {marginTop: 3, color: color.darkGray},
-                ]}>
-                Pregnancy Category
-              </Text>
-              <Text
-                style={[Styles.text14MR, {marginTop: 3, color: color.black}]}>
-                Pill Amount
-              </Text>
-              <Text
-                style={[
-                  Styles.text14MR,
-                  {marginTop: 3, color: color.lightGray},
-                ]}>
-                Company
-              </Text>
+      <ScrollView
+        style={styles.subContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <Box>
+          <View style={styles.headerView}>
+            <View style={styles.row}>
+              <Image source={images.IMAGE} style={styles.imageConatiner} />
+              <View style={styles.detailView}>
+                <Text
+                  style={[
+                    Styles.text14SOR,
+                    {fontWeight: '800', color: color.black},
+                  ]}
+                >
+                  Medicine Name
+                </Text>
+                <Text
+                  style={[
+                    Styles.text12MB,
+                    {marginTop: 3, color: color.darkGray},
+                  ]}
+                >
+                  Sceintific name
+                </Text>
+                <Text
+                  style={[
+                    Styles.text12MB,
+                    {marginTop: 3, color: color.darkGray},
+                  ]}
+                >
+                  Pregnancy Category
+                </Text>
+                <Text
+                  style={[Styles.text14MR, {marginTop: 3, color: color.black}]}
+                >
+                  Pill Amount
+                </Text>
+                <Text
+                  style={[
+                    Styles.text14MR,
+                    {marginTop: 3, color: color.lightGray},
+                  ]}
+                >
+                  Company
+                </Text>
+              </View>
             </View>
+            <TouchableOpacity onPress={()=>{}}>
+              <MaterialIcons name="arrow-back" size={26} color={color.black} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity>
-            <MaterialIcons name="arrow-back" size={26} color={color.black} />
-          </TouchableOpacity>
-        </View>
-        <PaddingBox style={scale(20)}/>
+          <PaddingBox style={scale(20)} />
+        </Box>
 
-
-       
-        <View>
+        <Box>
           <Text
-            style={[Styles.text14SOR, {fontWeight: '800', color: color.red}]}>
+            style={[Styles.text14SOR, {fontWeight: '800', color: color.red}]}
+          >
             Dose Considuration
           </Text>
           <PaddingBox />
@@ -167,17 +186,18 @@ const MedicineDetails = props => {
             />
           </View>
 
-          <PaddingBox style={50}/>
-       
+          <PaddingBox style={50} />
+
           <View style={styles.line} />
-          <PaddingBox style={20}/>
+          <PaddingBox style={20} />
           <View>
             <View style={styles.row}>
-            <Text
+              <Text
                 style={[
                   Styles.text14SOR,
                   {fontWeight: '800', color: color.black, width: '50%'},
-                ]}>
+                ]}
+              >
                 Serious Interaction
               </Text>
 
@@ -185,93 +205,102 @@ const MedicineDetails = props => {
                 style={[
                   Styles.text14SOR,
                   {fontWeight: '800', color: color.black, width: '50%'},
-                ]}>
-               Serious Interaction
+                ]}
+              >
+                Serious Interaction
               </Text>
             </View>
 
             <View>
-            <FlatList
-              data={[1, 2, 3, 4]}
-              renderItem={renderItemText}
-              keyExtractor={(item, index) => (item, index).toString()}
-            />
+              <FlatList
+                data={[1, 2, 3, 4]}
+                renderItem={renderItemText}
+                keyExtractor={(item, index) => (item, index).toString()}
+              />
             </View>
-              <PaddingBox style={20}/>
+            <PaddingBox style={20} />
 
-              <View style={[styles.row, {justifyContent: 'space-between'}]}>
-                <TouchableOpacity style={styles.dropdownButton}>
-                <Text
-                style={[
-                  Styles.text14M, {color: color.black}
-                ]}>
-                Side effects
-              </Text>    
-              <MaterialIcons color={color.black} size={18} name="keyboard-arrow-down"/>
-                </TouchableOpacity>
+            <View style={[styles.row, {justifyContent: 'space-between'}]}>
+              <TouchableOpacity style={styles.dropdownButton}>
+                <Text style={[Styles.text14M, {color: color.black}]}>
+                  Side effects
+                </Text>
+                <MaterialIcons
+                  color={color.black}
+                  size={18}
+                  name="keyboard-arrow-down"
+                />
+              </TouchableOpacity>
 
-                <TouchableOpacity style={styles.dropdownButton}>
-                <Text
-                style={[
-                  Styles.text14M, {color: color.black}
-                ]}>
-                Side effects
-              </Text>    
-              <MaterialIcons color={color.black} size={18} name="keyboard-arrow-down"/>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity style={styles.dropdownButton}>
+                <Text style={[Styles.text14M, {color: color.black}]}>
+                  Side effects
+                </Text>
+                <MaterialIcons
+                  color={color.black}
+                  size={18}
+                  name="keyboard-arrow-down"
+                />
+              </TouchableOpacity>
+            </View>
 
-              <PaddingBox/>
+            <PaddingBox />
 
-              <View style={[styles.row, {justifyContent: 'space-between'}]}>
-                <TouchableOpacity style={styles.dropdownButton}>
-                <Text
-                style={[
-                  Styles.text14M, {color: color.black}
-                ]}>
-                Side effects
-              </Text>    
-              <MaterialIcons color={color.black} size={18} name="keyboard-arrow-down"/>
-                </TouchableOpacity>
-              </View>
-          
+            <View style={[styles.row, {justifyContent: 'space-between'}]}>
+              <TouchableOpacity style={styles.dropdownButton}>
+                <Text style={[Styles.text14M, {color: color.black}]}>
+                  Side effects
+                </Text>
+                <MaterialIcons
+                  color={color.black}
+                  size={18}
+                  name="keyboard-arrow-down"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-          
 
           <PaddingBox style={20} />
           <View style={styles.line} />
           <PaddingBox style={30} />
-          <View style={styles.flatListView}>
-            <TouchableOpacity onPress={() => handleSlideLeft()}>
-              <MaterialIcons
-                name="chevron-left"
-                size={34}
-                color={color.black}
-              />
-            </TouchableOpacity>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={aryData}
-              ref={imageFlatList}
-              renderItem={renderImageItem}
-              keyExtractor={(item, index) => (item, index).toString()}
-              onScroll={e => {
-                setImageIndex(
-                  parseInt(e.nativeEvent.contentOffset.x / (width / 4.6)),
-                );
-              }}
+        </Box>
+        <View style={styles.flatListView}>
+          <TouchableOpacity
+            onPress={() => handleSlideLeft()}
+            style={styles.iconSide}
+          >
+            <MaterialIcons
+              name="arrow-back-ios"
+              size={24}
+              color={color.black}
             />
-
-            <TouchableOpacity onPress={() => handleSlideRight()}>
-              <MaterialIcons
-                name="chevron-right"
-                size={34}
-                color={color.black}
-              />
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={aryData}
+            ref={imageFlatList}
+            renderItem={renderImageItem}
+            ItemSeparatorComponent={() => <VerticalBox style={scale(15)} />}
+            keyExtractor={(item, index) => (item, index).toString()}
+            onScroll={e => {
+              setImageIndex(
+                parseInt(e.nativeEvent.contentOffset.x / (width / 4.6)),
+              );
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => handleSlideRight()}
+            style={styles.iconSide}
+          >
+            <MaterialIcons
+              name="arrow-forward-ios"
+              size={24}
+              color={color.black}
+            />
+          </TouchableOpacity>
         </View>
+        <PaddingBox style={30} />
       </ScrollView>
     </View>
   );
@@ -283,15 +312,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.white,
-    paddingBottom: scale(10)
   },
   row: {
     flexDirection: 'row',
   },
+  iconSide: {
+    marginHorizontal: 10,
+  },
   subContainer: {
     flex: 1,
     backgroundColor: color.descGrayModal,
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
     paddingTop: 20,
   },
   headerView: {
@@ -323,12 +354,21 @@ const styles = StyleSheet.create({
   flatListView: {
     flexDirection: 'row',
     alignItems: 'center',
-  },imageView:{
+  },
+  imageView: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: scale(24),
-    width: scale(55),
-  }, dropdownButton:{
-    borderWidth: 1, borderColor: color.primary, height: scale(34), width: '47%', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 12, borderRadius: 6, justifyContent: 'space-between'
-  }
+    width: widthPercentageToDP(20),
+  },
+  dropdownButton: {
+    borderWidth: 1,
+    borderColor: color.primary,
+    height: scale(34),
+    width: '47%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    justifyContent: 'space-between',
+  },
 });

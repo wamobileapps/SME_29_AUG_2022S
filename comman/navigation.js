@@ -4,5 +4,6 @@ export default {
     RagistrationScreen:"RagistrationScreen",
     HomeScreen:"HomeScreen",
     BottomTabs:"BottomTabs",
-    MedicineDetails: "MedicineDetails"
+    MedicineDetails: "MedicineDetails",
+    Prescription:"Prescription",
 }

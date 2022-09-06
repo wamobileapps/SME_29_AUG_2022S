@@ -18,7 +18,7 @@ export const color = {
     whiteLite: "#F3F3F3",
     black:"#000000",
     lightBlack:'#FAFAFA',
-    green:'#369514',
+    green:'#1AC052FF',
     red:"#AB1111",
     placeholder:"#C7C7CD",
     border:"#E3E3E3",

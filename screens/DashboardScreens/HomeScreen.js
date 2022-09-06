@@ -39,8 +39,9 @@ const HomeScreen = props => {
   const [isSeeMore, setisSeeMore] = useState(true);
   const [titileTextInput, setTitleTextInput] = useState('');
   const [descTextInput, setDescTextInput] = useState('');
-  const [toggle, settoggle] = useState(false);
- const [isModal, setmodal] = useState(false)
+  const [toggle, settoggle] = useState(true);
+  const [isModal, setmodal] = useState(false);
+  const [HistoryList, setHistoryList] = useState(History);
 
   useEffect(() => {
     dispatch(authAction.getMedicineData()).then(result => {
@@ -74,92 +75,126 @@ const HomeScreen = props => {
     } catch (error) {}
   };
 
+  const onEditMode = ind => {
+    if(activeTabs == 'A'){
+      let newdata = HistoryList.map((item, index) => {
+        ind == index ? (item.isAdded = !item.isAdded) : null;
+        return {...item};
+      });
+      // let newdata = [
+      //   ...HistoryList,
+      //   (HistoryList[index].isAdded = !HistoryList[index].isAdded),
+      // ];
+      setHistoryList(newdata);
+    }else{
+      let newdata = data.map((item, index) => {
+        ind == index ? (item.isAdded = !item.isAdded) : null;
+        return {...item};
+      });
+      setdata(newdata)
+    }
+  
+  };
+
   const renderItem = ({item, index}) => (
-    <TouchableOpacity
-    onPress={()=>{
-     props.navigation.navigate(navigationName.MedicineDetails)
-    }}
-     style={styles.listContainer}>
-      <View style={styles.leftSide}>
-        <View style={styles.rowList}>
-          <View style={styles.imageConatiner}>
-            {item.imageUrl ? (
-              <Image source={{uri: item.imageUrl}} style={styles.image} />
-            ) : (
-              <Image source={images.DOC} style={styles.image} />
-            )}
+    <>
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate(navigationName.MedicineDetails);
+        }}
+        style={styles.listContainer}
+      >
+        <View style={styles.leftSide}>
+          <View style={styles.rowList}>
+            <View style={styles.imageConatiner}>
+              {item.imageUrl ? (
+                <Image source={{uri: item.imageUrl}} style={styles.image} />
+              ) : (
+                <Image source={images.DOC} style={styles.image} />
+              )}
+            </View>
+            <View style={styles.textConatiner}>
+              <Text style={Styles.text14SOB} numberOfLines={2}>
+                {item.name}
+              </Text>
+              <Text
+                style={[Styles.text12MB, {color: '#9095A1FF'}]}
+                numberOfLines={2}
+              >
+                {item.scientificName}
+              </Text>
+            </View>
           </View>
-          <View style={styles.textConatiner}>
-            <Text style={Styles.text14SOB} numberOfLines={2}>
-              {item.name}
-            </Text>
-            <Text
-              style={[Styles.text12MB, {color: '#9095A1FF'}]}
-              numberOfLines={2}>
-              {item.scientificName}
-            </Text>
+          {!item.isAdded && (
+            <>
+              <PaddingBox />
+              <Text style={Styles.text12MB} numberOfLines={2}>
+                {item.comment}
+              </Text>
+            </>
+          )}
+        </View>
+        <View style={styles.rightSide}>
+          <Button
+            name="quick add"
+            onPress={() => {
+              onEditMode(index);
+            }}
+          />
+          <PaddingBox />
+          {!item.isAdded && <Button name="add" onPress={() => {}} />}
+        </View>
+      </TouchableOpacity>
+      {item.isAdded && (
+        <View style={styles.modalView}>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => {
+              setTitleTextInput(text);
+            }}
+            value={titileTextInput}
+          />
+          <PaddingBox />
+          <PaddingBox />
+          <Toggle
+            onColor={color.primary}
+            offColor={color.lightPrimay}
+            isOn={toggle}
+            onToggle={onToggle}
+          />
+          <PaddingBox />
+          <TextInput
+            style={[
+              styles.input,
+              {
+                height: 166,
+                borderRadius: 6,
+                backgroundColor: color.descGrayModal,
+                // display: toggle ? 'flex' : 'none',
+              },
+            ]}
+            onChangeText={text => {
+              setDescTextInput(text);
+            }}
+            textAlignVertical="top"
+            value={descTextInput}
+          />
+          <PaddingBox />
+          <View style={styles.ButtonStyle}>
+            <Button
+              name="Done"
+              style={{backgroundColor: color.green}}
+              onPress={() => {
+                setmodal(false);
+              }}
+            />
           </View>
         </View>
-        <PaddingBox />
-        <Text style={Styles.text12MB} numberOfLines={2}>
-          {item.comment}
-        </Text>
-      </View>
-      <View style={styles.rightSide}>
-        <Button name="quick add" onPress={() => {setmodal(true)}} />
-        <PaddingBox />
-        <Button name="add" onPress={() => {}} />
-      </View>
-    </TouchableOpacity>
+      )}
+    </>
   );
-
-  const MedicineModal = () => {
-    const onToggle = () => {
-      settoggle(!toggle);
-    };
-
-    return (
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={isModal}
-        onRequestClose={() => {
-          console.log('Modal has been closed.');
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TextInput
-              style={styles.input}
-              onChangeText={text => {
-                setTitleTextInput(text);
-              }}
-              value={titileTextInput}
-            />
-            <PaddingBox />
-            <PaddingBox />
-            <Toggle
-              onColor={color.primary}
-              offColor={color.lightPrimay}
-              isOn={toggle}
-              onToggle={onToggle}
-            />
-            <PaddingBox />
-            <TextInput
-              style={[styles.input, {height: 166, borderRadius: 6, backgroundColor: color.descGrayModal, display: toggle ? 'flex' : 'none'}]}
-              onChangeText={text => {
-                setDescTextInput(text);
-              }}
-              textAlignVertical = 'top'
-              value={descTextInput}
-            />
-             <PaddingBox />
-             <View style={styles.ButtonStyle}>
-             <Button name="Done" onPress={() => {setmodal(false)}} />
-             </View>
-          </View>
-        </View>
-      </Modal>
-    );
+  const onToggle = () => {
+    settoggle(!toggle);
   };
 
   return (
@@ -171,18 +206,20 @@ const HomeScreen = props => {
         isleftIcon={true}
         navigation={props.navigation}
       />
-      <MedicineModal />
       <PaddingBox />
       <Box>
         <SearchBar />
         <PaddingBox />
       </Box>
       <TopTabs activeTabs={activeTabs} onChangeTabs={onChangeTabs} />
-      <TouchableOpacity style={styles.floting}>
+      <TouchableOpacity
+        style={styles.floting}
+        onPress={() => props.navigation.navigate(navigationName.Prescription)}
+      >
         <Image source={images.NEWSPAPER} style={styles.flotingImage} />
       </TouchableOpacity>
       <FlatList
-        data={activeTabs == 'A' ? History : data}
+        data={activeTabs == 'A' ? HistoryList : data}
         renderItem={renderItem}
         initialNumToRender={3}
         keyExtractor={(item, index) => (item + index).toString()}
@@ -195,7 +232,8 @@ const HomeScreen = props => {
               <View style={styles.footerView}>
                 <TouchableOpacity
                   onPress={() => onLoadMoreData()}
-                  style={Styles.row}>
+                  style={Styles.row}
+                >
                   <Text style={[Styles.text14MR, {color: color.primary}]}>
                     {isSeeMore ? 'See More' : 'No More'}
                   </Text>
@@ -289,13 +327,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   modalView: {
-    margin: 20,
     width: '90%',
+    alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 8,
+    marginTop: 10,
     padding: 10,
 
     shadowColor: '#000',
@@ -305,15 +344,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 3,
   },
   input: {
-    height: 25,
+    height: verticalScale(35),
     width: '100%',
     padding: 10,
     backgroundColor: color.grayModal,
   },
-  ButtonStyle:{
+  ButtonStyle: {
     alignItems: 'flex-end',
-  }
+  },
 });

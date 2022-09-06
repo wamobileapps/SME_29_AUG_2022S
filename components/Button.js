@@ -7,9 +7,9 @@ import { Styles } from '../comman/styles';
 import { scale } from 'react-native-size-matters';
 import { widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-const Button = ({name, onPress,isTrue}) => {
+const Button = ({name, onPress,isTrue, style}) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={()=>onPress()} >
+    <TouchableOpacity style={{...styles.button,...style}} onPress={()=>onPress()} >
         <Text style={[Styles.text14MR,{color:color.white,}]}>
             {name}
         </Text>

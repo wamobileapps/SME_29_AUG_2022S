@@ -13,5 +13,9 @@ export default {
     TW:require("../assets/tw.png"),
     DOC:require("../assets/doc.png"),
     NEWSPAPER:require("../assets/newspaper.png"),
-    IMAGE : require("../assets/image.jpg")
+    IMAGE : require("../assets/image.jpg"),
+    EDIT : require("../assets/edit.png"),
+    TRASH : require("../assets/trash.png"),
+    CHECK : require("../assets/check.png"),
+
 }

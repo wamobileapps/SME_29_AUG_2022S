@@ -2,333 +2,240 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
+  SafeAreaView,
   FlatList,
-  Image,
   TouchableOpacity,
-  Modal,
+  Image,
   TextInput,
-  Switch,
-  ScrollView,
-  Dimensions,
 } from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
-import {Styles} from '../../comman/styles';
-import {color} from '../../comman/theme';
-import {Box, Center, PaddingBox, VerticalBox} from '../../comman/alignBox';
+import React, {useState, useEffect} from 'react';
 import Header from '../../components/Header';
-import SearchBar from '../../components/SearchBar';
-import TopTabs from '../../components/TopTabs';
-import {scale, verticalScale} from 'react-native-size-matters';
-import images from '../../comman/images';
 import Button from '../../components/Button';
-import * as authAction from '../../redux/actions/authAction';
-import {useDispatch} from 'react-redux';
-import Loader from '../../comman/Loader';
+import {PaddingBox} from '../../comman/alignBox';
+import images from '../../comman/images';
+import navigationName from '../../comman/navigation';
+import {Styles} from '../../comman/styles';
+import {scale, verticalScale} from 'react-native-size-matters';
+import {color} from '../../comman/theme';
 import {History} from '../../comman/const';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toggle from '../../comman/Toggle';
-
-const width = Dimensions.get('window').width;
+import ButtonFooter from '../../components/ButtonFooter';
 
 const Prescription = props => {
-  const dispatch = useDispatch();
-  const [loading, setloading] = useState(false);
-  const [imageIndex, setImageIndex] = useState(0);
-  const [selectedItem, setSelectedItem] = useState(2)
-  const imageFlatList = useRef();
+  const [toggle, settoggle] = useState(false);
+  const [isEdit, setisEdit] = useState(true);
+  const [HistoryList, setHistoryList] = useState(History);
 
-  useEffect(() => {}, []);
-  const aryData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  const renderItem = ({item}) => {
-    return (
-      <Text style={[Styles.text12MB, {marginTop: 3, color: color.darkGray}]}>
-        consideration1
-      </Text>
-    );
+  const onToggle = () => {
+    settoggle(!toggle);
   };
 
-  const renderItemText = ({item}) => {
-    return (
-      <TouchableOpacity
-      onPress={()=>{setSelectedItem(item)}}
-      >
 
-      <Text style={[item == selectedItem?Styles.text14B :Styles.text12MB , {marginTop: 6, color: item == selectedItem ? color.red : color.darkGray}]}>
-      Pregnancy Category
-      </Text>
-      </TouchableOpacity>
-    );
-  };
+  const onEditMode = (index) =>{
+   let newdata= [...HistoryList, HistoryList[index].isEdit = !HistoryList[index].isEdit];
+    setHistoryList(newdata)
+  }
 
-  const renderImageItem = ({item}) => {
-    return (
-      <View
-        style={styles.imageView}>
-        <Image source={images.IMAGE} style={styles.image} />
-        <Text
-          style={[
-            Styles.text14SOR,
-            {fontWeight: '800', color: color.black, marginTop: 8},
-          ]}>
-          Medicine Name
-        </Text>
+
+  const onRadioMode = (index) =>{
+    let newdata= [...HistoryList, HistoryList[index].toggle = !HistoryList[index].toggle];
+     setHistoryList(newdata)
+   }
+
+  const renderItem = ({item, index}) => (
+    <TouchableOpacity
+    activeOpacity={1}
+      style={styles.listContainer}
+    >
+      <View style={styles.leftSide}>
+        <View style={styles.rowList}>
+          <View style={styles.imageConatiner}>
+            {item.imageUrl ? (
+              <Image source={{uri: item.imageUrl}} style={styles.image} />
+            ) : (
+              <Image source={images.DOC} style={styles.image} />
+            )}
+          </View>
+          <View style={styles.textConatiner}>
+            <Text style={Styles.text14SOB} numberOfLines={2}>
+              {item.name}
+            </Text>
+            <Text
+              style={[Styles.text12MB, {color: '#9095A1FF'}]}
+              numberOfLines={2}
+            >
+              {item.scientificName}
+            </Text>
+          </View>
+        </View>
+        <PaddingBox />
+        {!item.isEdit ? (
+          <View>
+            <View style={[Styles.alignbetween, {width: wp('82%')}]}>
+              <Text style={Styles.text12MB} numberOfLines={2}>
+                {item.comment}
+              </Text>
+              <TouchableOpacity onPress={() => {onEditMode(index)}}>
+                <Image source={images.EDIT} style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+            <PaddingBox style={5} />
+            <View style={styles.rapeStyle}>
+              <Text numberOfLines={1} style={Styles.text12MB}>
+                patient should chill every......
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <View>
+            <View style={styles.inputConatiner}></View>
+            <PaddingBox />
+            <Toggle
+              onColor={color.primary}
+              offColor={color.borderInput}
+              isOn={!item.toggle}
+              onToggle={()=>onRadioMode(index)}
+            />
+            <PaddingBox />
+            <View style={styles.inputBox}>
+              <TextInput
+                textAlign="left"
+                style={styles.textarea}
+                multiline={true}
+                autoCorrect={false}
+                value={
+                  item.des
+                }
+              />
+            </View>
+            <PaddingBox style={5} />
+            <View style={{width: wp(80)}}>
+              <TouchableOpacity style={styles.right} onPress={()=>onEditMode(index)} >
+                <Image source={images.CHECK} style={styles.checkStyles} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
-    );
-  };
-
-  const handleSlideRight = () => {
-    if (imageIndex < aryData.length - 1) {
-      imageFlatList.current.scrollToIndex({index: imageIndex + 1});
-      setImageIndex(imageIndex + 1);
-    }
-  };
-
-  const handleSlideLeft = () => {
-    if (imageIndex > 0) {
-      imageFlatList.current.scrollToIndex({index: imageIndex - 1});
-      setImageIndex(imageIndex - 1);
-    }
-  };
-
+      <View style={styles.rightSide}>
+        <Image source={images.TRASH} style={styles.icon} />
+        <PaddingBox />
+      </View>
+    </TouchableOpacity>
+  );
   return (
-    <View style={styles.container}>
-      <Loader loading={loading} />
-      <StatusBar backgroundColor={color.white} barStyle="dark-content" />
+    <SafeAreaView style={Styles.container}>
       <Header
-        name="Profile listing"
+        name="Prescription"
         isleftIcon={true}
         navigation={props.navigation}
       />
-      <Box>
-        <SearchBar />
-        <PaddingBox />
-      </Box>
-      <ScrollView style={styles.subContainer} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerView}>
-          <View style={styles.row}>
-            <Image source={images.IMAGE} style={styles.imageConatiner} />
-            <View style={styles.detailView}>
-              <Text
-                style={[
-                  Styles.text14SOR,
-                  {fontWeight: '800', color: color.black},
-                ]}>
-                Medicine Name
-              </Text>
-              <Text
-                style={[
-                  Styles.text12MB,
-                  {marginTop: 3, color: color.darkGray},
-                ]}>
-                Sceintific name
-              </Text>
-              <Text
-                style={[
-                  Styles.text12MB,
-                  {marginTop: 3, color: color.darkGray},
-                ]}>
-                Pregnancy Category
-              </Text>
-              <Text
-                style={[Styles.text14MR, {marginTop: 3, color: color.black}]}>
-                Pill Amount
-              </Text>
-              <Text
-                style={[
-                  Styles.text14MR,
-                  {marginTop: 3, color: color.lightGray},
-                ]}>
-                Company
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity>
-            <MaterialIcons name="arrow-back" size={26} color={color.black} />
-          </TouchableOpacity>
-        </View>
-        <PaddingBox style={scale(20)}/>
+      <View style={[styles.line,{width:"100%"}]}/>
+      <FlatList
+        renderItem={renderItem}
+        data={History}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View style={styles.line} />}
+        keyExtractor={(item, index) => (item + index).toString()}
+      />
+      <ButtonFooter>
 
-
-       
-        <View>
-          <Text
-            style={[Styles.text14SOR, {fontWeight: '800', color: color.red}]}>
-            Dose Considuration
-          </Text>
-          <PaddingBox />
-
-          <View>
-            <FlatList
-              data={[1, 2, 3, 4]}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => (item, index).toString()}
-            />
-          </View>
-
-          <PaddingBox style={50}/>
-       
-          <View style={styles.line} />
-          <PaddingBox style={20}/>
-          <View>
-            <View style={styles.row}>
-            <Text
-                style={[
-                  Styles.text14SOR,
-                  {fontWeight: '800', color: color.black, width: '50%'},
-                ]}>
-                Serious Interaction
-              </Text>
-
-              <Text
-                style={[
-                  Styles.text14SOR,
-                  {fontWeight: '800', color: color.black, width: '50%'},
-                ]}>
-               Serious Interaction
-              </Text>
-            </View>
-
-            <View>
-            <FlatList
-              data={[1, 2, 3, 4]}
-              renderItem={renderItemText}
-              keyExtractor={(item, index) => (item, index).toString()}
-            />
-            </View>
-              <PaddingBox style={20}/>
-
-              <View style={[styles.row, {justifyContent: 'space-between'}]}>
-                <TouchableOpacity style={styles.dropdownButton}>
-                <Text
-                style={[
-                  Styles.text14M, {color: color.black}
-                ]}>
-                Side effects
-              </Text>    
-              <MaterialIcons color={color.black} size={18} name="keyboard-arrow-down"/>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.dropdownButton}>
-                <Text
-                style={[
-                  Styles.text14M, {color: color.black}
-                ]}>
-                Side effects
-              </Text>    
-              <MaterialIcons color={color.black} size={18} name="keyboard-arrow-down"/>
-                </TouchableOpacity>
-              </View>
-
-              <PaddingBox/>
-
-              <View style={[styles.row, {justifyContent: 'space-between'}]}>
-                <TouchableOpacity style={styles.dropdownButton}>
-                <Text
-                style={[
-                  Styles.text14M, {color: color.black}
-                ]}>
-                Side effects
-              </Text>    
-              <MaterialIcons color={color.black} size={18} name="keyboard-arrow-down"/>
-                </TouchableOpacity>
-              </View>
-          
-          </View>
-          
-
-          <PaddingBox style={20} />
-          <View style={styles.line} />
-          <PaddingBox style={30} />
-          <View style={styles.flatListView}>
-            <TouchableOpacity onPress={() => handleSlideLeft()}>
-              <MaterialIcons
-                name="chevron-left"
-                size={34}
-                color={color.black}
-              />
-            </TouchableOpacity>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={aryData}
-              ref={imageFlatList}
-              renderItem={renderImageItem}
-              keyExtractor={(item, index) => (item, index).toString()}
-              onScroll={e => {
-                setImageIndex(
-                  parseInt(e.nativeEvent.contentOffset.x / (width / 4.6)),
-                );
-              }}
-            />
-
-            <TouchableOpacity onPress={() => handleSlideRight()}>
-              <MaterialIcons
-                name="chevron-right"
-                size={34}
-                color={color.black}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+      </ButtonFooter>
+    </SafeAreaView>
   );
 };
 
 export default Prescription;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: color.white,
-    paddingBottom: scale(10)
+  rapeStyle: {
+    width: wp(60),
+    borderRadius: 5,
+    backgroundColor: color.borderInput,
+    paddingHorizontal: 10,
+    height: scale(40),
+    // alignItems:"center",
+    justifyContent: 'center',
   },
-  row: {
-    flexDirection: 'row',
+  checkStyles: {
+    width: scale(50),
+    height: scale(50),
   },
-  subContainer: {
-    flex: 1,
-    backgroundColor: color.descGrayModal,
-    paddingHorizontal: 15,
-    paddingTop: 20,
+  right: {
+    alignSelf: 'flex-end',
   },
-  headerView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  inputBox: {
+    height: hp(20),
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#9095A1FF',
+    padding: 10,
+    width: wp(80),
   },
-  detailView: {
-    marginStart: 8,
+  textarea: {
+    textAlignVertical: 'top',
+    height: hp(20),
+    padding: 0,
+    fontFamily:"Mulish-Regular",
+    fontSize:scale(12),
   },
-  imageConatiner: {
-    width: scale(90),
-    height: scale(90),
-    backgroundColor: color.primary,
+  inputConatiner: {
+    width: wp('80%'),
+    height: verticalScale(35),
+    backgroundColor: color.borderInput,
+    borderRadius: scale(0),
   },
   image: {
-    width: scale(56),
-    height: scale(50),
-    backgroundColor: color.primary,
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
+  },
+  icon: {
+    width: scale(25),
+    height: scale(25),
   },
   line: {
     borderBottomWidth: 1,
     borderColor: color.lightGray,
     marginHorizontal: 12,
+    width: wp(85),
+    alignSelf: 'center',
   },
-
+  textConatiner: {
+    width: '70%',
+    paddingHorizontal: 10,
+  },
+  rowList: {
+    flexDirection: 'row',
+  },
+  rightSide: {
+    width: '10%',
+  },
+  imageConatiner: {
+    width: scale(60),
+    height: scale(60),
+    borderRadius: 30,
+    backgroundColor: color.primary,
+  },
   leftSide: {
     width: '70%',
   },
-  flatListView: {
+  listContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: scale(6),
     flexDirection: 'row',
-    alignItems: 'center',
-  },imageView:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: scale(24),
-    width: scale(55),
-  }, dropdownButton:{
-    borderWidth: 1, borderColor: color.primary, height: scale(34), width: '47%', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 12, borderRadius: 6, justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+    padding: 10,
+    paddingHorizontal: 12,
+    paddingVertical: verticalScale(15),
+    backgroundColor: color.white,
+    marginTop: 2,
+  },
 });
