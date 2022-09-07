@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   filterConatiner: {
     flexDirection: 'row',
-    width: '20%',
+    width: '15%',
     height: '100%',
     backgroundColor: '#F3F4F6FF',
     borderRadius: scale(6),
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   searchBarConatiner: {
     flexDirection: 'row',
-    width: '75%',
+    width: '80%',
     height: '100%',
     backgroundColor: '#F3F4F6FF',
     borderRadius: scale(6),

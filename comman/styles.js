@@ -145,6 +145,16 @@ export const Styles = StyleSheet.create({
         fontSize:12,
         color:color.black
     },
+    text18MB:{
+        fontFamily:"Mulish-Regular", 
+        fontSize:18,
+        color:color.black
+    },
+    text14MB:{
+        fontFamily:"Mulish-Regular", 
+        fontSize:14,
+        color:color.black
+    },
     text12M:{
         fontFamily:"Outfit-Medium", 
         fontSize:12,
@@ -201,6 +211,11 @@ export const Styles = StyleSheet.create({
     text14SOR:{
         fontFamily:"Sora-Regular", 
         fontSize:14,
+        color:color.black
+    },
+    text12SORBold:{
+        fontFamily:"Sora-Bold", 
+        fontSize:12,
         color:color.black
     },
     text14SOB:{

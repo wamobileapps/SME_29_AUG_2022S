@@ -118,7 +118,7 @@ const HomeScreen = props => {
                 {item.name}
               </Text>
               <Text
-                style={[Styles.text12MB, {color: '#9095A1FF'}]}
+                style={[Styles.text12MB, {color: '#9095A1FF', marginTop: 5}]}
                 numberOfLines={2}
               >
                 {item.scientificName}
@@ -128,7 +128,7 @@ const HomeScreen = props => {
           {!item.isAdded && (
             <>
               <PaddingBox />
-              <Text style={Styles.text12MB} numberOfLines={2}>
+              <Text style={[Styles.text12MB, {marginHorizontal: 12}]} numberOfLines={2}>
                 {item.comment}
               </Text>
             </>
@@ -156,12 +156,12 @@ const HomeScreen = props => {
           />
           <PaddingBox />
           <PaddingBox />
-          <Toggle
+          {/* <Toggle
             onColor={color.primary}
             offColor={color.lightPrimay}
             isOn={toggle}
             onToggle={onToggle}
-          />
+          /> */}
           <PaddingBox />
           <TextInput
             style={[
@@ -177,6 +177,7 @@ const HomeScreen = props => {
               setDescTextInput(text);
             }}
             textAlignVertical="top"
+            multiline={true}
             value={descTextInput}
           />
           <PaddingBox />
@@ -282,6 +283,7 @@ const styles = StyleSheet.create({
   textConatiner: {
     width: '70%',
     paddingHorizontal: 10,
+    paddingVertical: 7
   },
   rowList: {
     flexDirection: 'row',
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
   imageConatiner: {
     width: scale(60),
     height: scale(60),
-    borderRadius: 30,
+    borderRadius: 35,
     backgroundColor: color.primary,
   },
   leftSide: {

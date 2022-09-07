@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     height: scale(50),
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: scale(20)
   },
   tobBox: {
     width: '50%',

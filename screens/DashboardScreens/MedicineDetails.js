@@ -163,7 +163,7 @@ const MedicineDetails = props => {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity onPress={()=>{}}>
+            <TouchableOpacity style={{marginTop: -8}} onPress={()=>{}}>
               <MaterialIcons name="arrow-back" size={26} color={color.black} />
             </TouchableOpacity>
           </View>
@@ -323,11 +323,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color.descGrayModal,
     // paddingHorizontal: 15,
-    paddingTop: 20,
   },
   headerView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20
   },
   detailView: {
     marginStart: 8,
@@ -336,6 +336,8 @@ const styles = StyleSheet.create({
     width: scale(90),
     height: scale(90),
     backgroundColor: color.primary,
+    borderBottomStartRadius: 4, 
+    borderTopStartRadius: 4
   },
   image: {
     width: scale(56),

@@ -25,6 +25,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toggle from '../../comman/Toggle';
 import ButtonFooter from '../../components/ButtonFooter';
+import navigation from '../../comman/navigation';
 
 const Prescription = props => {
   const [toggle, settoggle] = useState(false);
@@ -42,6 +43,10 @@ const Prescription = props => {
     setHistoryList(newdata)
   }
 
+  const onSubmit =()=>{
+
+  }
+
 
   const onRadioMode = (index) =>{
     let newdata= [...HistoryList, HistoryList[index].toggle = !HistoryList[index].toggle];
@@ -50,6 +55,7 @@ const Prescription = props => {
 
   const renderItem = ({item, index}) => (
     <TouchableOpacity
+    onPress={()=>{props.navigation.navigate(navigation.PrescriptionDetails)}}
     activeOpacity={1}
       style={styles.listContainer}
     >
@@ -67,7 +73,7 @@ const Prescription = props => {
               {item.name}
             </Text>
             <Text
-              style={[Styles.text12MB, {color: '#9095A1FF'}]}
+              style={[Styles.text12MB, {color: '#9095A1FF', marginTop: 5}]}
               numberOfLines={2}
             >
               {item.scientificName}
@@ -78,7 +84,7 @@ const Prescription = props => {
         {!item.isEdit ? (
           <View>
             <View style={[Styles.alignbetween, {width: wp('82%')}]}>
-              <Text style={Styles.text12MB} numberOfLines={2}>
+              <Text style={[Styles.text12MB, {marginHorizontal: 12}]} numberOfLines={2}>
                 {item.comment}
               </Text>
               <TouchableOpacity onPress={() => {onEditMode(index)}}>
@@ -144,7 +150,7 @@ const Prescription = props => {
         ItemSeparatorComponent={() => <View style={styles.line} />}
         keyExtractor={(item, index) => (item + index).toString()}
       />
-      <ButtonFooter>
+      <ButtonFooter name={'To Summary'} onPress={()=>{onSubmit()}}>
 
       </ButtonFooter>
     </SafeAreaView>
@@ -210,6 +216,7 @@ const styles = StyleSheet.create({
   textConatiner: {
     width: '70%',
     paddingHorizontal: 10,
+    paddingVertical: 7
   },
   rowList: {
     flexDirection: 'row',
@@ -220,7 +227,7 @@ const styles = StyleSheet.create({
   imageConatiner: {
     width: scale(60),
     height: scale(60),
-    borderRadius: 30,
+    borderRadius: 35,
     backgroundColor: color.primary,
   },
   leftSide: {

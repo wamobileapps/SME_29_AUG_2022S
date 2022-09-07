@@ -26,6 +26,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import DiseasesScreen from '../screens/DashboardScreens/DiseasesScreen';
 import MedicineDetails from '../screens/DashboardScreens/MedicineDetails';
 import Prescription from '../screens/DashboardScreens/Prescription';
+import PrescriptionDetails from '../screens/DashboardScreens/PrescriptionDetails';
 
 // const Tabs = createMaterialTopTabNavigator();
 
@@ -187,6 +188,7 @@ const HomeStack = () => {
         <Stack.Screen name={navigation.HomeScreen} component={HomeScreen} />
         <Stack.Screen name={navigation.MedicineDetails} component={MedicineDetails} />
         <Stack.Screen name={navigation.Prescription} component={Prescription} />
+        <Stack.Screen name={navigation.PrescriptionDetails} component={PrescriptionDetails}/>
         
       
     </Stack.Navigator>

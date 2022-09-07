@@ -6,4 +6,5 @@ export default {
     BottomTabs:"BottomTabs",
     MedicineDetails: "MedicineDetails",
     Prescription:"Prescription",
+    PrescriptionDetails:"PrescriptionDetails",
 }

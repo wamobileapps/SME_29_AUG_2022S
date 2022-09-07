@@ -4,10 +4,10 @@ import { scale } from 'react-native-size-matters'
 import { color } from '../comman/theme'
 import { Styles } from '../comman/styles'
 
-const ButtonFooter = (props) => {
+const ButtonFooter = ({name, onPress}) => {
   return (
-    <TouchableOpacity style={styles.container}>
-      <Text style={{...Styles.text14MR,color:color.black}}>To Summary</Text>
+    <TouchableOpacity onPress={()=>onPress} style={styles.container}>
+      <Text style={{...Styles.text14MR,color:color.black}}>{name}</Text>
     </TouchableOpacity>
   )
 }
@@ -21,5 +21,6 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         backgroundColor:color.green,
+        marginBottom: 'auto'
     },
 })
