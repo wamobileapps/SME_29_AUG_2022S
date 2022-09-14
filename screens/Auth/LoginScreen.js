@@ -92,7 +92,7 @@ const LoginScreen = props => {
         setloading(false)
         console.log('onSuccess', result);
         // alert("Login Successfully.")
-        ToastAndroid.show("Login Successfully.", ToastAndroid.SHORT);
+        //ToastAndroid.show("Login Successfully.", ToastAndroid.SHORT);
         if(checkbox){
           let data={
             mobile,

@@ -29,17 +29,36 @@ import {History} from '../../comman/const';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Toggle from '../../comman/Toggle';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
+import TextInputView from '../../components/TextInputView';
+import SelectDropdown from 'react-native-select-dropdown';
 
 const width = Dimensions.get('window').width;
 
 const MedicineDetails = props => {
   const dispatch = useDispatch();
+  const medicineId = props?.route?.params?.medicineId
   const [loading, setloading] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
-  const [selectedItem, setSelectedItem] = useState(2);
+  const [medicineDetails, setmedicineDetails] = useState('');
+  const [diseaseList, setdiseaseList] = useState('');
+  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedContraInteraction, setSelectedContraInteraction] =
+    useState('');
+  const [comment, setcomment] = useState('');
   const imageFlatList = useRef();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setloading(true);
+    dispatch(authAction.getMedicineById(medicineId)).then(async res => {
+      setmedicineDetails(res);
+      setloading(false);
+      var data = []
+      for (let i = 0; i < res?.diseaseList.length; i++) {
+      data.push(res?.diseaseList[i].name)
+      }
+      setdiseaseList(data)
+    });
+  }, []);
   const aryData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const renderItem = ({item}) => {
@@ -55,8 +74,7 @@ const MedicineDetails = props => {
       <TouchableOpacity
         onPress={() => {
           setSelectedItem(item);
-        }}
-      >
+        }}>
         <Text
           style={[
             item == selectedItem ? Styles.text14B : Styles.text12MB,
@@ -64,9 +82,31 @@ const MedicineDetails = props => {
               marginTop: 6,
               color: item == selectedItem ? color.red : color.darkGray,
             },
-          ]}
-        >
-          Pregnancy Category
+          ]}>
+          {item?.interactionMedicine?.name}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderItemContraInteraction = ({item}) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedContraInteraction(item);
+        }}>
+        <Text
+          style={[
+            item == selectedContraInteraction
+              ? Styles.text14B
+              : Styles.text12MB,
+            {
+              marginTop: 6,
+              color:
+                item == selectedContraInteraction ? color.red : color.darkGray,
+            },
+          ]}>
+          {item}
         </Text>
       </TouchableOpacity>
     );
@@ -80,8 +120,7 @@ const MedicineDetails = props => {
           style={[
             Styles.text14SOR,
             {fontWeight: '800', color: color.black, marginTop: 8},
-          ]}
-        >
+          ]}>
           Medicine Name
         </Text>
       </View>
@@ -117,53 +156,51 @@ const MedicineDetails = props => {
       </Box>
       <ScrollView
         style={styles.subContainer}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <Box>
           <View style={styles.headerView}>
             <View style={styles.row}>
-              <Image source={images.IMAGE} style={styles.imageConatiner} />
+              <Image
+                source={{uri: medicineDetails?.imageUrl}}
+                style={styles.imageConatiner}
+              />
               <View style={styles.detailView}>
                 <Text
                   style={[
                     Styles.text14SOR,
                     {fontWeight: '800', color: color.black},
-                  ]}
-                >
-                  Medicine Name
+                  ]}>
+                  {medicineDetails?.name}
                 </Text>
                 <Text
                   style={[
                     Styles.text12MB,
                     {marginTop: 3, color: color.darkGray},
-                  ]}
-                >
-                  Sceintific name
+                  ]}>
+                  {medicineDetails?.scientificName}
                 </Text>
                 <Text
                   style={[
                     Styles.text12MB,
                     {marginTop: 3, color: color.darkGray},
-                  ]}
-                >
-                  Pregnancy Category
+                  ]}>
+                  {'Pregnancy Category :   ' +
+                    medicineDetails?.pregnancyCategory}
                 </Text>
                 <Text
-                  style={[Styles.text14MR, {marginTop: 3, color: color.black}]}
-                >
-                  Pill Amount
+                  style={[Styles.text14MR, {marginTop: 3, color: color.black}]}>
+                  {medicineDetails?.billsAmount}
                 </Text>
                 <Text
                   style={[
                     Styles.text14MR,
                     {marginTop: 3, color: color.lightGray},
-                  ]}
-                >
-                  Company
+                  ]}>
+                  {medicineDetails?.companyName}
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={{marginTop: -8}} onPress={()=>{}}>
+            <TouchableOpacity style={{marginTop: -8}} onPress={() => {}}>
               <MaterialIcons name="arrow-back" size={26} color={color.black} />
             </TouchableOpacity>
           </View>
@@ -172,15 +209,14 @@ const MedicineDetails = props => {
 
         <Box>
           <Text
-            style={[Styles.text14SOR, {fontWeight: '800', color: color.red}]}
-          >
+            style={[Styles.text14SOR, {fontWeight: '800', color: color.red}]}>
             Dose Considuration
           </Text>
           <PaddingBox />
 
           <View>
             <FlatList
-              data={[1, 2, 3, 4]}
+              data={medicineDetails?.dozeConsideration}
               renderItem={renderItem}
               keyExtractor={(item, index) => (item, index).toString()}
             />
@@ -192,61 +228,115 @@ const MedicineDetails = props => {
           <PaddingBox style={20} />
           <View>
             <View style={styles.row}>
-              <Text
-                style={[
-                  Styles.text14SOR,
-                  {fontWeight: '800', color: color.black, width: '50%'},
-                ]}
-              >
-                Serious Interaction
-              </Text>
+              <View style={{flex: 0.5}}>
+                <Text
+                  style={[
+                    Styles.text14SOR,
+                    {fontWeight: '800', color: color.black,},
+                  ]}>
+                  Serious Interaction
+                </Text>
+                <FlatList
+                  data={medicineDetails?.interactions}
+                  renderItem={renderItemText}
+                  keyExtractor={(item, index) => (item, index).toString()}
+                />
+              </View>
 
-              <Text
-                style={[
-                  Styles.text14SOR,
-                  {fontWeight: '800', color: color.black, width: '50%'},
-                ]}
-              >
-                Serious Interaction
-              </Text>
+              <View style={{flex: 0.5}}>
+                <Text
+                  style={[
+                    Styles.text14SOR,
+                    {fontWeight: '800', color: color.black,},
+                  ]}>
+                  Contra Interaction
+                </Text>
+                <FlatList
+                  data={medicineDetails?.contraIndications}
+                  renderItem={renderItemContraInteraction}
+                  keyExtractor={(item, index) => (item, index).toString()}
+                />
+              </View>
             </View>
 
-            <View>
-              <FlatList
-                data={[1, 2, 3, 4]}
-                renderItem={renderItemText}
-                keyExtractor={(item, index) => (item, index).toString()}
-              />
-            </View>
+            <View></View>
             <PaddingBox style={20} />
 
             <View style={[styles.row, {justifyContent: 'space-between'}]}>
-              <TouchableOpacity style={styles.dropdownButton}>
-                <Text style={[Styles.text14M, {color: color.black}]}>
-                  Side effects
-                </Text>
-                <MaterialIcons
-                  color={color.black}
-                  size={18}
-                  name="keyboard-arrow-down"
-                />
-              </TouchableOpacity>
+              <SelectDropdown
+                buttonStyle={styles.dropdownButton}
+                data={medicineDetails?.sideEffects}
+                onSelect={selectedItem => {
+                  //setOpeningTimeValue(index, selectedItem)
+                }}
+                defaultButtonText={'Side effects'}
+                dropdownIconPosition='right'
+                renderDropdownIcon={() => {
+                  return (
+                    <MaterialIcons
+                      color={color.black}
+                      size={18}
+                      name="keyboard-arrow-down"
+                    />
+                  );
+                }}
+                buttonTextStyle={Styles.text14M}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item;
+                }}
+                rowTextStyle={Styles.text14M}
+              />
 
-              <TouchableOpacity style={styles.dropdownButton}>
+
+<SelectDropdown
+                buttonStyle={styles.dropdownButton}
+                data={diseaseList}
+                onSelect={selectedItem => {
+                  //setOpeningTimeValue(index, selectedItem)
+                }}
+                defaultButtonText={'Disease'}
+                dropdownIconPosition='right'
+                renderDropdownIcon={() => {
+                  return (
+                    <MaterialIcons
+                      color={color.black}
+                      size={18}
+                      name="keyboard-arrow-down"
+                    />
+                  );
+                }}
+                buttonTextStyle={Styles.text14M}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item;
+                }}
+                rowTextStyle={Styles.text14M}
+              />
+
+
+
+
+
+              {/* <TouchableOpacity style={styles.dropdownButton}>
                 <Text style={[Styles.text14M, {color: color.black}]}>
-                  Side effects
+                  Diseases
                 </Text>
                 <MaterialIcons
                   color={color.black}
                   size={18}
                   name="keyboard-arrow-down"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             <PaddingBox />
 
-            <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            {/* <View style={[styles.row, {justifyContent: 'space-between'}]}>
               <TouchableOpacity style={styles.dropdownButton}>
                 <Text style={[Styles.text14M, {color: color.black}]}>
                   Side effects
@@ -257,14 +347,26 @@ const MedicineDetails = props => {
                   name="keyboard-arrow-down"
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
           <PaddingBox style={20} />
           <View style={styles.line} />
           <PaddingBox style={30} />
         </Box>
-        <View style={styles.flatListView}>
+        <View style={styles.textInput}>
+          <TextInput
+            placeholder={'Comment'}
+            value={comment}
+            onChangeText={t => setcomment(t)}
+            style={[
+              {flex: 1, textAlignVertical: 'top', margin: 8},
+              Styles.text12M,
+            ]}
+          />
+        </View>
+
+        {/* <View style={styles.flatListView}>
           <TouchableOpacity
             onPress={() => handleSlideLeft()}
             style={styles.iconSide}
@@ -299,7 +401,7 @@ const MedicineDetails = props => {
               color={color.black}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <PaddingBox style={30} />
       </ScrollView>
     </View>
@@ -327,7 +429,7 @@ const styles = StyleSheet.create({
   headerView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20
+    marginTop: 20,
   },
   detailView: {
     marginStart: 8,
@@ -336,8 +438,8 @@ const styles = StyleSheet.create({
     width: scale(90),
     height: scale(90),
     backgroundColor: color.primary,
-    borderBottomStartRadius: 4, 
-    borderTopStartRadius: 4
+    borderBottomStartRadius: 4,
+    borderTopStartRadius: 4,
   },
   image: {
     width: scale(56),
@@ -368,9 +470,16 @@ const styles = StyleSheet.create({
     height: scale(34),
     width: '47%',
     alignItems: 'center',
-    flexDirection: 'row',
     paddingHorizontal: 12,
     borderRadius: 6,
     justifyContent: 'space-between',
+  },
+  textInput: {
+    width: '90%',
+    minHeight: 130,
+    borderWidth: 1,
+    borderColor: color.lightGray,
+    alignSelf: 'center',
+    borderRadius: scale(5),
   },
 });

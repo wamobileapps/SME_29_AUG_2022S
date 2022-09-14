@@ -100,7 +100,7 @@ const HomeScreen = props => {
     <>
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate(navigationName.MedicineDetails);
+          props.navigation.navigate(navigationName.MedicineDetails, {medicineId: item.id});
         }}
         style={styles.listContainer}
       >
