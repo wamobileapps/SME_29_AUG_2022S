@@ -6,7 +6,7 @@ import { Styles } from '../comman/styles'
 
 const ButtonFooter = ({name, onPress}) => {
   return (
-    <TouchableOpacity onPress={()=>onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <Text style={{...Styles.text14MR,color:color.black}}>{name}</Text>
     </TouchableOpacity>
   )

@@ -27,6 +27,7 @@ import DiseasesScreen from '../screens/DashboardScreens/DiseasesScreen';
 import MedicineDetails from '../screens/DashboardScreens/MedicineDetails';
 import Prescription from '../screens/DashboardScreens/Prescription';
 import PrescriptionDetails from '../screens/DashboardScreens/PrescriptionDetails';
+import QrImageModal from '../modals/QrImageModal';
 
 // const Tabs = createMaterialTopTabNavigator();
 
@@ -184,11 +185,13 @@ const HomeStack = () => {
         headerShown: false,
       }}
       initialRouteName={navigation.HomeScreen}>
-        
+
         <Stack.Screen name={navigation.HomeScreen} component={HomeScreen} />
         <Stack.Screen name={navigation.MedicineDetails} component={MedicineDetails} />
         <Stack.Screen name={navigation.Prescription} component={Prescription} />
         <Stack.Screen name={navigation.PrescriptionDetails} component={PrescriptionDetails}/>
+        <Stack.Screen name={navigation.QrImageModal} component={QrImageModal}/>
+        
         
       
     </Stack.Navigator>

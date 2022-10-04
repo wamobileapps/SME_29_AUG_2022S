@@ -6,7 +6,7 @@ import {color} from '../comman/theme';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const SearchBar = props => {
+const SearchBar = ({}) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchBarConatiner}>

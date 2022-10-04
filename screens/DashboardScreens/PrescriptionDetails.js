@@ -28,15 +28,9 @@ import Toggle from '../../comman/Toggle';
 import ButtonFooter from '../../components/ButtonFooter';
 
 const PrescriptionDetails = props => {
-  
 const doctorDetails = 'Dr.Ahmad Qarabssa \n MD, Internal medicine specialist, palestinian board, british board  Gastroenterology specialist, palestinian board Adress ;AL-Bira , AL-Fahd Trading Center, near Al-Bira  Mosque \n Telefon Number ; 0569808145 , \n Whats app;  00970569808145 '
-
-  
-
    const onSubmit = () =>{
-
    }
-
   
   return (
     <SafeAreaView style={Styles.container}>
