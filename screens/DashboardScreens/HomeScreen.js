@@ -16,6 +16,7 @@ import {color} from '../../comman/theme';
 import {Box, Center, PaddingBox, VerticalBox} from '../../comman/alignBox';
 import Header from '../../components/Header';
 import SearchBar from '../../components/SearchBar';
+import Toast from 'react-native-toast-message';
 import TopTabs from '../../components/TopTabs';
 import {scale, verticalScale} from 'react-native-size-matters';
 import images from '../../comman/images';
@@ -97,16 +98,24 @@ const HomeScreen = props => {
     }
   
   };
-
+   console.log(cart.length,"cartlength");
   const onAddCart = (value) =>{
       var  newData=[...cart];
       let isHai = newData.filter(item => item.id==value.id)
       if(isHai.length ==0){
           newData.push(value)
+          Toast.show({
+            type: 'success',
+            text1: 'Successfully Added!',
+          });
       }else{
          newData.map((item, index)=>{
              item=value;
          })
+         Toast.show({
+          type: 'success',
+          text1: 'Already Added!',
+        });
       }
       dispatch(cartAction.addCartPrescription(newData))
   } 
