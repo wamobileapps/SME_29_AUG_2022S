@@ -16,20 +16,24 @@ import {color} from '../../comman/theme';
 import {Box, Center, PaddingBox, VerticalBox} from '../../comman/alignBox';
 import Header from '../../components/Header';
 import SearchBar from '../../components/SearchBar';
+import Toast from 'react-native-toast-message';
 import TopTabs from '../../components/TopTabs';
 import {scale, verticalScale} from 'react-native-size-matters';
 import images from '../../comman/images';
 import Button from '../../components/Button';
 import * as authAction from '../../redux/actions/authAction';
+import * as cartAction from '../../redux/actions/cartAction';
 import {useDispatch} from 'react-redux';
 import Loader from '../../comman/Loader';
 import {History} from '../../comman/const';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Toggle from '../../comman/Toggle';
 import navigationName from '../../comman/navigation';
+import { useSelector } from 'react-redux';
 
 const HomeScreen = props => {
   const dispatch = useDispatch();
+  const cart =  useSelector(state => state.cart.cart);
   const [data, setdata] = useState([]);
   const [activeTabs, setactiveTabs] = useState('A');
   const [loading, setloading] = useState(true);
@@ -60,6 +64,9 @@ const HomeScreen = props => {
     setactiveTabs(value);
   };
 
+
+  
+
   const onLoadMoreData = () => {
     try {
       let newLoad = fullData.slice(offset + 3, limit + 3);
@@ -81,10 +88,6 @@ const HomeScreen = props => {
         ind == index ? (item.isAdded = !item.isAdded) : null;
         return {...item};
       });
-      // let newdata = [
-      //   ...HistoryList,
-      //   (HistoryList[index].isAdded = !HistoryList[index].isAdded),
-      // ];
       setHistoryList(newdata);
     }else{
       let newdata = data.map((item, index) => {
@@ -95,12 +98,33 @@ const HomeScreen = props => {
     }
   
   };
+   console.log(cart.length,"cartlength");
+  const onAddCart = (value) =>{
+      var  newData=[...cart];
+      let isHai = newData.filter(item => item.id==value.id)
+      if(isHai.length ==0){
+          newData.push(value)
+          Toast.show({
+            type: 'success',
+            text1: 'Successfully Added!',
+          });
+      }else{
+         newData.map((item, index)=>{
+             item=value;
+         })
+         Toast.show({
+          type: 'success',
+          text1: 'Already Added!',
+        });
+      }
+      dispatch(cartAction.addCartPrescription(newData))
+  } 
 
   const renderItem = ({item, index}) => (
     <>
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate(navigationName.MedicineDetails, {medicineId: item.id});
+          props.navigation.navigate(navigationName.MedicineDetails);
         }}
         style={styles.listContainer}
       >
@@ -142,7 +166,9 @@ const HomeScreen = props => {
             }}
           />
           <PaddingBox />
-          {!item.isAdded && <Button name="add" onPress={() => {}} />}
+          {!item.isAdded && <Button name="add" onPress={() => {
+            onAddCart(item)
+          }} />}
         </View>
       </TouchableOpacity>
       {item.isAdded && (

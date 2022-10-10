@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
   container: {
     height: 50,
     backgroundColor: color.white,
+    elevation:5,
+    width:"100%",
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -7,4 +7,5 @@ export default {
     MedicineDetails: "MedicineDetails",
     Prescription:"Prescription",
     PrescriptionDetails:"PrescriptionDetails",
+    QrImageModal:"QrImageModal",
 }
