@@ -33,6 +33,7 @@ import * as authAction from '../../redux/actions/authAction';
 import {useDispatch} from 'react-redux';
 import QrImageModal from '../../modals/QrImageModal';
 import Loader from '../../comman/Loader';
+import Toast from 'react-native-toast-message';
 
 const Prescription = props => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const Prescription = props => {
   const [isEdit, setisEdit] = useState(true);
   const [HistoryList, setHistoryList] = useState([]);
   const [isScanShow, setisScanShow] = useState(false);
-  const [PrescriptionQR, setPrescriptionQR] = useState("")
+  const [PrescriptionQR, setPrescriptionQR] = useState('');
   const onToggle = () => {
     settoggle(!toggle);
   };
@@ -60,8 +61,21 @@ const Prescription = props => {
     setHistoryList(newD);
   };
 
+  const onEditComplete = ind => {
+    Toast.show({
+      type: 'success',
+      text1: 'Successfully Update!',
+    });
+    let newD = HistoryList.map((item, index) => {
+      index == ind ? (item.isEdit = !item.isEdit) : null;
+      return {...item};
+    });
+    setHistoryList(newD);
+    dispatch(cartAction.addCartPrescription(HistoryList));
+  };
+
   const onSubmit = () => {
-    setloading(true)
+    setloading(true);
     var newCollection = [];
     HistoryList.map((item, index) => {
       let value = {
@@ -79,12 +93,12 @@ const Prescription = props => {
     };
     dispatch(authAction.AddPrescriptionData(data)).then(result => {
       console.log(result);
-      if(result.qrLink != undefined){
-        props.navigation.navigate("QrImageModal",{uri:result.qrLink})
-      }else{
-        alert("Somthing went wrong.")
+      if (result.qrLink != undefined) {
+        props.navigation.navigate('QrImageModal', {uri: result.qrLink});
+      } else {
+        alert('Somthing went wrong.');
       }
-      setloading(false)
+      setloading(false);
     });
   };
 
@@ -102,6 +116,21 @@ const Prescription = props => {
     setHistoryList(newdata);
   };
 
+  const onChangeTextValue = (ind, text) => {
+    let newArr = HistoryList.map((item, index) => {
+      ind == index ? (item.comment = text) : null;
+      return {...item};
+    });
+    setHistoryList(newArr);
+  };
+
+  const onChangeTextDesValue = (ind, text) => {
+    let newArr = HistoryList.map((item, index) => {
+      ind == index ? (item.des = text) : null;
+      return {...item};
+    });
+    setHistoryList(newArr);
+  };
   const renderItem = ({item, index}) => (
     <TouchableOpacity
       onPress={() => {
@@ -157,14 +186,24 @@ const Prescription = props => {
           </View>
         ) : (
           <View>
-            <View style={styles.inputConatiner}></View>
+            <View style={styles.inputConatiner}>
+              <TextInput
+                textAlign="left"
+                numberOfLines={1}
+                autoCorrect={false}
+                value={item.comment}
+                onChangeText={text => {
+                  onChangeTextValue(index, text);
+                }}
+              />
+            </View>
             <PaddingBox />
-            <Toggle
+            {/* <Toggle
               onColor={color.primary}
               offColor={color.borderInput}
               isOn={!item.toggle}
               onToggle={() => onRadioMode(index)}
-            />
+            /> */}
             <PaddingBox />
             <View style={styles.inputBox}>
               <TextInput
@@ -173,13 +212,16 @@ const Prescription = props => {
                 multiline={true}
                 autoCorrect={false}
                 value={item.des}
+                onChangeText={text => {
+                  onChangeTextDesValue(index, text);
+                }}
               />
             </View>
             <PaddingBox style={5} />
             <View style={{width: wp(80)}}>
               <TouchableOpacity
                 style={styles.right}
-                onPress={() => onEditMode(index)}>
+                onPress={() => onEditComplete(index)}>
                 <Image source={images.CHECK} style={styles.checkStyles} />
               </TouchableOpacity>
             </View>
@@ -258,6 +300,7 @@ const styles = StyleSheet.create({
     height: verticalScale(35),
     backgroundColor: color.borderInput,
     borderRadius: scale(0),
+    justifyContent: 'center',
   },
   image: {
     width: '100%',
