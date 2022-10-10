@@ -357,6 +357,7 @@ const MedicineDetails = props => {
         <View style={styles.textInput}>
           <TextInput
             placeholder={'Comment'}
+            placeholderTextColor={color.black}
             value={comment}
             onChangeText={t => setcomment(t)}
             style={[
