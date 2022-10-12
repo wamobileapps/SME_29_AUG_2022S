@@ -64,7 +64,7 @@ const Prescription = props => {
   const onEditComplete = ind => {
     Toast.show({
       type: 'success',
-      text1: 'Successfully Update!',
+      text1: 'Successfully Updated!',
     });
     let newD = HistoryList.map((item, index) => {
       index == ind ? (item.isEdit = !item.isEdit) : null;
