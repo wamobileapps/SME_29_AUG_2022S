@@ -29,11 +29,11 @@ import {History} from '../../comman/const';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Toggle from '../../comman/Toggle';
 import navigationName from '../../comman/navigation';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = props => {
   const dispatch = useDispatch();
-  const cart =  useSelector(state => state.cart.cart);
+  const cart = useSelector(state => state.cart.cart);
   const [data, setdata] = useState([]);
   const [activeTabs, setactiveTabs] = useState('A');
   const [loading, setloading] = useState(true);
@@ -51,6 +51,9 @@ const HomeScreen = props => {
     dispatch(authAction.getMedicineData()).then(result => {
       setisSeeMore(true);
       if (result.length != 0) {
+        console.log('====================================');
+        console.log(result);
+        console.log('====================================');
         setfullData(result);
         setdata(result.slice(0, 3));
         setloading(false);
@@ -63,9 +66,6 @@ const HomeScreen = props => {
   const onChangeTabs = value => {
     setactiveTabs(value);
   };
-
-
-  
 
   const onLoadMoreData = () => {
     try {
@@ -83,44 +83,45 @@ const HomeScreen = props => {
   };
 
   const onEditMode = ind => {
-    if(activeTabs == 'A'){
+    if (activeTabs == 'A') {
       let newdata = HistoryList.map((item, index) => {
         ind == index ? (item.isAdded = !item.isAdded) : null;
         return {...item};
       });
       setHistoryList(newdata);
-    }else{
+    } else {
       let newdata = data.map((item, index) => {
         ind == index ? (item.isAdded = !item.isAdded) : null;
         return {...item};
       });
-      setdata(newdata)
+      setdata(newdata);
     }
-  
   };
-   console.log(cart.length,"cartlength");
-  const onAddCart = (value) =>{
-      var  newData=[...cart];
-      let isHai = newData.filter(item => item.id==value.id)
-      if(isHai.length ==0){
-          newData.push(value)
-          Toast.show({
-            type: 'success',
-            text1: 'Successfully Added!',
-          });
-      }else{
-         newData.map((item, index)=>{
-             item=value;
-         })
-         Toast.show({
-          type: 'success',
-          text1: 'Already Added!',
-        });
-      }
-      dispatch(cartAction.addCartPrescription(newData))
-  } 
+  console.log(cart.length, 'cartlength');
+  const onAddCart = value => {
+    var newData = [...cart];
+    let isHai = newData.filter(item => item.id == value.id);
+    if (isHai.length == 0) {
+      newData.push(value);
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully Added!',
+      });
+    } else {
+      newData.map((item, index) => {
+        item = value;
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Already Added!',
+      });
+    }
+    dispatch(cartAction.addCartPrescription(newData));
+  };
 
-  const renderItem = ({item, index}) => (
+  const renderItem = ({item, index}) =>{
+    let data =item.doze != undefined ?`${item.doze.qty} ${item.doze.quantityUnit} ${item.doze.frequency} for ${item.doze.period} ${item.doze.periodUnit}`:"";
+    return (
     <>
       <TouchableOpacity
         onPress={() => {
@@ -152,9 +153,23 @@ const HomeScreen = props => {
           {!item.isAdded && (
             <>
               <PaddingBox />
-              <Text style={[Styles.text12MB, {marginHorizontal: 12}]} numberOfLines={2}>
-                {item.comment}
-              </Text>
+              {item.doze != undefined ? (
+                <Text
+                  style={[Styles.text12MB, {marginHorizontal: 12}]}
+                  numberOfLines={2}
+                >
+                  {/* {item.comment} */}
+
+                  {data}
+                </Text>
+              ) : (
+                <Text
+                  style={[Styles.text12MB, {marginHorizontal: 12}]}
+                  numberOfLines={2}
+                >
+                  {item.comment}
+                </Text>
+              )}
             </>
           )}
         </View>
@@ -166,9 +181,14 @@ const HomeScreen = props => {
             }}
           />
           <PaddingBox />
-          {!item.isAdded && <Button name="add" onPress={() => {
-            onAddCart(item)
-          }} />}
+          {!item.isAdded && (
+            <Button
+              name="add"
+              onPress={() => {
+                onAddCart(item);
+              }}
+            />
+          )}
         </View>
       </TouchableOpacity>
       {item.isAdded && (
@@ -178,7 +198,7 @@ const HomeScreen = props => {
             onChangeText={text => {
               setTitleTextInput(text);
             }}
-            value={titileTextInput}
+            value={data}
           />
           <PaddingBox />
           <PaddingBox />
@@ -190,6 +210,7 @@ const HomeScreen = props => {
           /> */}
           <PaddingBox />
           <TextInput
+
             style={[
               styles.input,
               {
@@ -219,7 +240,7 @@ const HomeScreen = props => {
         </View>
       )}
     </>
-  );
+  );}
   const onToggle = () => {
     settoggle(!toggle);
   };
@@ -309,7 +330,7 @@ const styles = StyleSheet.create({
   textConatiner: {
     width: '70%',
     paddingHorizontal: 10,
-    paddingVertical: 7
+    paddingVertical: 7,
   },
   rowList: {
     flexDirection: 'row',
