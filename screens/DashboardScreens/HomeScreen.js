@@ -120,7 +120,8 @@ const HomeScreen = props => {
   };
 
   const renderItem = ({item, index}) =>{
-    let data =item.doze != undefined ?`${item.doze.qty} ${item.doze.quantityUnit} ${item.doze.frequency} for ${item.doze.period} ${item.doze.periodUnit}`:"";
+    console.log('testttt---->>>', item)
+    let data =item.doze != undefined ?`${item.doze.qty}   ${item.doze.quantityUnit}   ${item.doze.frequency} for ${item.doze.period}   ${item.doze.periodUnit}`:"";
     return (
     <>
       <TouchableOpacity
@@ -177,7 +178,7 @@ const HomeScreen = props => {
           <Button
             name="quick add"
             onPress={() => {
-              onEditMode(index);
+              onAddCart(item);
             }}
           />
           <PaddingBox />
@@ -185,7 +186,7 @@ const HomeScreen = props => {
             <Button
               name="add"
               onPress={() => {
-                onAddCart(item);
+                onEditMode(index);
               }}
             />
           )}
@@ -233,7 +234,7 @@ const HomeScreen = props => {
               name="Done"
               style={{backgroundColor: color.green}}
               onPress={() => {
-                setmodal(false);
+               onEditMode(index)
               }}
             />
           </View>
@@ -264,6 +265,9 @@ const HomeScreen = props => {
         style={styles.floting}
         onPress={() => props.navigation.navigate(navigationName.Prescription)}
       >
+        <View style={{height: scale(20), width: scale(20), backgroundColor: 'red', borderRadius: scale(10), position: 'absolute', zIndex: 100, alignSelf: 'flex-end', justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={[Styles.text12MB, {color: 'white'}]}>{cart.length}</Text>
+        </View>
         <Image source={images.NEWSPAPER} style={styles.flotingImage} />
       </TouchableOpacity>
       <FlatList
