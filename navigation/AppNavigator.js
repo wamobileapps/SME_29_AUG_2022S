@@ -67,11 +67,13 @@ function BottomTabs() {
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
+        tabBarHideOnKeyboard:true,
         tabBarActiveTintColor: color.primary,
         tabBarStyle: {
           paddingHorizontal: scale(30),
           height: Platform.OS == 'ios' ? 90 : 55,
         },
+       
       }}
     >
       <Tab.Screen
