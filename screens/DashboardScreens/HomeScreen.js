@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Switch,
+  Switch,Dimensions
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Styles} from '../../comman/styles';
 import {color} from '../../comman/theme';
 import {Box, Center, PaddingBox, VerticalBox} from '../../comman/alignBox';
@@ -30,6 +30,18 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Toggle from '../../comman/Toggle';
 import navigationName from '../../comman/navigation';
 import {useSelector} from 'react-redux';
+import { Dropdown } from 'react-native-element-dropdown';
+export const windowWidth = Dimensions.get('screen').width;
+export const windowHeight = Dimensions.get('screen').height;
+
+const TabData =[{tabName:'CAP',id:0},{tabName:'ML',id:1},{tabName:'SACHET',id:2},
+{tabName:'TAB',id:3},{tabName:'MG',id:4}]
+
+const q8hrdata = [{name:'Q2H',id:0},{name:'Q4H',id:1},{name:'Q8H',id:2},
+{name:'Q12H',id:3},{name:'Q24H',id:4},{name:'Q48H',id:5},{name:'Q72H',id:6},{name:'QWEEK',id:7}]
+
+const daysData = [{dayName:'DAY',id:0},{dayName:'WEEK',id:1},
+{dayName:'MONTH',id:2},{dayName:'Yearly',id:3}]
 
 const HomeScreen = props => {
   const dispatch = useDispatch();
@@ -44,18 +56,28 @@ const HomeScreen = props => {
   const [titileTextInput, setTitleTextInput] = useState('');
   const [descTextInput, setDescTextInput] = useState('');
   const [toggle, settoggle] = useState(true);
-  const [isModal, setmodal] = useState(false);
+  const [isModal, setmodal] = useState(true);
   const [HistoryList, setHistoryList] = useState(History);
-
+  const [tabValue, setTabValue] = useState('');
+  const [count, setCount] = useState('');
+  const[dozeValue,setDozeValue]=useState('')
+  const[daysValue,setDaysValue]=useState('')
+  const[addView,setAddView]=useState('')
+ const [countArray,setCountArray] = useState([{key:"1"},{key:"2"},{key:"3"},{key:"4"},{key:"5"},{key:"6"},
+ {key:"7"},{key:"8"},{key:"9"},{key:"10"}])
   useEffect(() => {
     dispatch(authAction.getMedicineData()).then(result => {
       setisSeeMore(true);
       if (result.length != 0) {
-        console.log('====================================');
-        console.log(result);
-        console.log('====================================');
+        // console.log('=======================================899878979878979878',result);
         setfullData(result);
         setdata(result.slice(0, 3));
+        result.map((item,index)=>{
+        setCount(item?.doze?.qty.toString())
+        setTabValue(item?.doze?.quantityUnit)
+        setDozeValue(item?.doze?.frequency)
+        setDaysValue(item?.doze?.periodUnit)
+        })
         setloading(false);
       } else {
         setloading(false);
@@ -98,7 +120,9 @@ const HomeScreen = props => {
     }
   };
   console.log(cart.length, 'cartlength');
+  
   const onAddCart = value => {
+   setAddView(!value.isAdded)
     var newData = [...cart];
     let isHai = newData.filter(item => item.id == value.id);
     if (isHai.length == 0) {
@@ -116,12 +140,33 @@ const HomeScreen = props => {
         text1: 'Already Added!',
       });
     }
+
     dispatch(cartAction.addCartPrescription(newData));
   };
+ const  handleCountChange = (item,index)=>{
+     let newarr = data.filter((item,ind)=>{
+       return  index == ind ? setCount(item.key):null
+       
+      })
+  }
+  const handleTabChange = (item,index)=>{
+  let newarr = data.filter((item,ind)=>{
+    return  index == ind ? setTabValue(item.tabName):null
+  })
+  }
+  const handleDozeChange = (item,index)=>{
+    let newarr = data.filter((item,ind)=>{
+      return  index == ind ? setDozeValue(item.name):null
+    })
+  }
+  const handleDayChange = (item,index)=>{
+    let newarr = data.filter((item,ind)=>{
+      return  index == ind ? setDaysValue(item.dayName):null
+    })
+  }
 
   const renderItem = ({item, index}) =>{
-    console.log('testttt---->>>', item)
-    let data =item.doze != undefined ?`${item.doze.qty}   ${item.doze.quantityUnit}   ${item.doze.frequency} for ${item.doze.period}   ${item.doze.periodUnit}`:"";
+    let data =item.doze != undefined ?`${item.doze.qty} ${item.doze.quantityUnit} ${item.doze.frequency} for ${item.doze.period} ${item.doze.periodUnit}`:""; 
     return (
     <>
       <TouchableOpacity
@@ -179,36 +224,139 @@ const HomeScreen = props => {
             name="quick add"
             onPress={() => {
               onAddCart(item);
-            }}
+             }}
           />
           <PaddingBox />
-          {!item.isAdded && (
+          {/* {!item.isAdded && (
             <Button
               name="add"
               onPress={() => {
-                onEditMode(index);
+              onEditMode(index);
+              setAddView(item.isAdded)
               }}
             />
-          )}
+          )} */}
+         {addView==false ? 
+            <Button
+              name="add"
+              onPress={() => {
+              onEditMode(index);
+              setAddView(item.isAdded)
+              }}
+            />:
+            null
+          }
+
         </View>
       </TouchableOpacity>
-      {item.isAdded && (
+     {addView ? 
         <View style={styles.modalView}>
-          <TextInput
-            style={styles.input}
-            onChangeText={text => {
-              setTitleTextInput(text);
-            }}
-            value={data}
-          />
+         <View style={{flexDirection:"row",justifyContent:'space-between',maxHeight:100}}>
+          <Dropdown
+              style={{ height:45,
+                borderColor: 'black',
+                borderWidth: 1,
+                borderRadius: 8,
+                paddingHorizontal: 8,
+                width:windowWidth/8,
+                alignSelf: "center", }}
+                
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={countArray}
+              maxHeight={150}
+              showsVerticalScrollIndicator={false}
+              inputSearchStyle={{ color: "yellow", fontSize: 40 }}
+              labelField="key"
+              value={count}
+              selectedTextProps={'ghghgh'}
+              placeholder={count?count:'1'}
+              onChange={item => {
+                
+                handleCountChange(item,index)
+               
+              }}
+              renderItem={(item) => {
+                return <View style={styles.alternateplatess}>
+                  <Text style={{ color: "black", fontSize: 16 }}>{item.key}</Text>
+                </View>
+              }}
+            />
+          <Dropdown
+              style={[styles.dropdown, { borderColor: 'black' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={TabData}
+              maxHeight={150}
+              showsVerticalScrollIndicator={false}
+              inputSearchStyle={{ color: "yellow", fontSize: 40 }}
+              labelField="tabName"
+             
+              value={tabValue}
+              selectedTextProps={'ghghgh'}
+              placeholder={tabValue?tabValue:'Select'}
+              onChange={(item,index) => {
+                handleTabChange(item,index)
+              }}
+              renderItem={(item) => {
+                return <View style={styles.alternateplatess}>
+                  <Text style={{ color: "black", fontSize: 16 }}>{item.tabName}</Text>
+                </View>
+              }}
+            />
+              <Dropdown
+              style={[styles.dropdown, { borderColor: 'black' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={q8hrdata}
+              maxHeight={150}
+              showsVerticalScrollIndicator={false}
+              inputSearchStyle={{ color: "yellow", fontSize: 40 }}
+              labelField="name"
+           
+              value={dozeValue}
+              selectedTextProps={'ghghgh'}
+              placeholder={dozeValue?dozeValue:'Select'}
+              onChange={item => {
+             
+                handleDozeChange(item,index)
+              }}
+              renderItem={(item) => {
+                return <View style={styles.alternateplatess}>
+                  <Text style={{ color: "black", fontSize: 16 }}>{item.name}</Text>
+                </View>
+              }}
+            />
+              <Dropdown
+              style={[styles.dropdown, { borderColor: 'black' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={daysData}
+              maxHeight={150}
+              showsVerticalScrollIndicator={false}
+              inputSearchStyle={{ color: "yellow", fontSize: 40 }}
+              labelField="dayName"           
+              value={daysValue}
+              selectedTextProps={'ghghgh'}
+              placeholder={daysValue? daysValue:'Select'}
+              onChange={item => {
+           
+                handleDayChange(item,index)
+              }}
+              renderItem={(item) => {
+                return <View style={styles.alternateplatess}>
+                  <Text style={{ color: "black", fontSize: 16 }}>{item.dayName}</Text>
+                </View>
+              }}
+            />
+          </View>
+        
           <PaddingBox />
           <PaddingBox />
-          {/* <Toggle
-            onColor={color.primary}
-            offColor={color.lightPrimay}
-            isOn={toggle}
-            onToggle={onToggle}
-          /> */}
           <PaddingBox />
           <TextInput
 
@@ -218,7 +366,6 @@ const HomeScreen = props => {
                 height: 166,
                 borderRadius: 6,
                 backgroundColor: color.descGrayModal,
-                // display: toggle ? 'flex' : 'none',
               },
             ]}
             onChangeText={text => {
@@ -234,12 +381,15 @@ const HomeScreen = props => {
               name="Done"
               style={{backgroundColor: color.green}}
               onPress={() => {
-               onEditMode(index)
-              }}
+                onAddCart(item);
+                 }}
             />
           </View>
         </View>
-      )}
+        :
+        null
+      } 
+      
     </>
   );}
   const onToggle = () => {
@@ -265,9 +415,11 @@ const HomeScreen = props => {
         style={styles.floting}
         onPress={() => props.navigation.navigate(navigationName.Prescription)}
       >
-        <View style={{height: scale(20), width: scale(20), backgroundColor: 'red', borderRadius: scale(10), position: 'absolute', zIndex: 100, alignSelf: 'flex-end', justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={[Styles.text12MB, {color: 'white'}]}>{cart.length}</Text>
-        </View>
+        <TouchableOpacity style={{zIndex:90,backgroundColor:"red",alignSelf:"flex-end",top:25,width:25,borderRadius:15,
+      justifyContent:"center",alignItems:"center"}}>
+
+        <Text style={{fontSize:16,color:"white"}}>{cart.length}</Text>
+        </TouchableOpacity>
         <Image source={images.NEWSPAPER} style={styles.flotingImage} />
       </TouchableOpacity>
       <FlatList
@@ -408,4 +560,27 @@ const styles = StyleSheet.create({
   ButtonStyle: {
     alignItems: 'flex-end',
   },
+  dropdown: {
+    height: 45,
+    borderColor: 'red',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    width: windowWidth/5,
+    alignSelf: "center"
+  },
+
+ placeholderStyle: {
+    fontSize: 12,
+  },
+
+ selectedTextStyle: {
+    fontSize: 12,
+  },
+
+ alternateplatess: {
+    height: 30,
+    paddingLeft: 15,
+    marginVertical: 3
+  }
 });

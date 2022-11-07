@@ -9,16 +9,19 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useMemo} from 'react';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import {PaddingBox} from '../../comman/alignBox';
 import images from '../../comman/images';
 import navigationName from '../../comman/navigation';
+import {useSelector} from 'react-redux';
 import {Styles} from '../../comman/styles';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {color} from '../../comman/theme';
 import {History} from '../../comman/const';
+import Loader from '../../comman/Loader';
+import * as authAction from '../../redux/actions/authAction';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -26,12 +29,45 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toggle from '../../comman/Toggle';
 import ButtonFooter from '../../components/ButtonFooter';
+import { useDispatch } from 'react-redux';
 
 const PrescriptionDetails = props => {
 const doctorDetails = 'Dr.Ahmad Qarabssa \n MD, Internal medicine specialist, palestinian board, british board  Gastroenterology specialist, palestinian board Adress ;AL-Bira , AL-Fahd Trading Center, near Al-Bira  Mosque \n Telefon Number ; 0569808145 , \n Whats app;  00970569808145 '
-   const onSubmit = () =>{
-   }
-  
+const dispatch = useDispatch();
+const cart = useSelector(state => state.cart.cart);
+const [HistoryList, setHistoryList] = useState([]);
+const [loading, setloading] = useState(false);
+useMemo(() => {
+  setHistoryList(cart);
+}, [cart]);
+
+const onSubmit = () => {
+  setloading(true);
+  var newCollection = [];
+  HistoryList.map((item, index) => {
+    let value = {
+      medicineId: item.id,
+      qty: item.doze.qty,
+      quantityUnit: item.doze.quantityUnit,
+      period: item.doze.period,
+      periodUnit: item.doze.periodUnit,
+    };
+    newCollection.push(value);
+  });
+  let data = {
+    medicines: newCollection,
+    comment: '',
+  };
+  dispatch(authAction.AddPrescriptionData(data)).then(result => {
+    console.log(result);
+    if (result.qrLink != undefined) {
+      props.navigation.navigate('QrImageModal', {uri: result.qrLink});
+    } else {
+      alert('Somthing went wrong.');
+    }
+    setloading(false);
+  });
+};
   return (
     <SafeAreaView style={Styles.container}>
       <Header
@@ -39,6 +75,7 @@ const doctorDetails = 'Dr.Ahmad Qarabssa \n MD, Internal medicine specialist, pa
         isleftIcon={true}
         navigation={props.navigation}
       />
+        <Loader loading={loading} />
       <View style={[styles.line,{width:"100%"}]}/>
       <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
         <View style={styles.mainView}>

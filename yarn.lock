@@ -5683,6 +5683,11 @@ react-native-codegen@^0.0.17:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-element-dropdown@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-element-dropdown/-/react-native-element-dropdown-2.3.1.tgz#f17b0723b13628a1ec01c6cdb652429823d20476"
+  integrity sha512-L7b4uXuKkSdUHkeubV2gvgxdxvFx+lXu2KlPrEbWOlaVrMyIiojhZtAzXHPD07HJUzJnubY+1YYNUq5RAJzLbA==
+
 react-native-gesture-handler@^2.6.0:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.7.1.tgz#c109d33c38cb182fafcda13012b77c6cac43b127"
