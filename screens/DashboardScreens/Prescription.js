@@ -238,9 +238,13 @@ const Prescription = props => {
   };
 
   const renderItem = ({item, index}) => {
+    // console.log("qwyfdjkagscjhgaskj",`${item.doze.qty} ${item.doze.quantityUnit} ${item.doze.frequency} for ${item.doze.period} ${item.doze.periodUnit}`);
+    // let qty =item.doze.qty == "0" ? "1":""
+    // let time =item.doze.periodUnit == "MONTH" ? "days":item.doze.periodUnit
     let data =
       item.doze != undefined
-        ? `${item.doze.qty} ${item.doze.quantityUnit} ${item.doze.frequency} for ${item.doze.period} ${item.doze.periodUnit}`
+        ?
+        `${item.doze.qty} ${item.doze.quantityUnit} ${item.doze.frequency} for ${item.doze.period} ${item.doze.periodUnit}`
         : '';
     return (
       <View
@@ -484,7 +488,7 @@ const Prescription = props => {
       <View style={[styles.line, {width: '100%'}]} />
       <FlatList
         renderItem={renderItem}
-        data={HistoryList}
+        data={cart}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.line} />}
         keyExtractor={(item, index) => (item + index).toString()}

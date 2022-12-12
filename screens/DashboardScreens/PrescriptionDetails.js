@@ -37,6 +37,7 @@ const dispatch = useDispatch();
 const cart = useSelector(state => state.cart.cart);
 const [HistoryList, setHistoryList] = useState([]);
 const [loading, setloading] = useState(false);
+console.log(HistoryList,"HistoryListHistoryListHistoryList");
 useMemo(() => {
   setHistoryList(cart);
 }, [cart]);
@@ -68,6 +69,13 @@ const onSubmit = () => {
     setloading(false);
   });
 };
+const renderItem = ({item})=>{
+  // console.log(item,"itemitemitemitem");
+  // let qty =item.doze.qty == "0" ? "1":""
+  return(
+    <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{item.scientificName} {item.doze.qty} tab {item.doze.frequency} for {item.doze.period} {item.doze.periodUnit}</Text>
+  )
+}
   return (
     <SafeAreaView style={Styles.container}>
       <Header
@@ -109,9 +117,14 @@ const onSubmit = () => {
         </View>
 
         <View style={{marginHorizontal: 16, marginTop: 24}}>
-          <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{'trufen 600 mg 1 tab q8 hr for 14 days prn before meal'}</Text>
-          <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{'Amoxitid 750mg 1 tab q8 hr for 14 days regularly before meal'}</Text>
-          <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{'acamol 500mg 2 tab q8 hr for 14 days regularly before meal'}</Text>
+          <FlatList 
+          data={cart}
+          renderItem={renderItem}
+          keyExtractor={item=>item.id}
+          />
+          {/* <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{'trufen 600 mg 1 tab q8 hr for 14 days prn before meal'}</Text> */}
+          {/* <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{'Amoxitid 750mg 1 tab q8 hr for 14 days regularly before meal'}</Text> */}
+          {/* <Text style={[Styles.text12SORBold, {marginTop: 16}]}>{'acamol 500mg 2 tab q8 hr for 14 days regularly before meal'}</Text> */}
           <Text style={[Styles.text14SOR, {marginTop: 16}]}>{'dr.Name ; Ahmad Qarabssa'}</Text>
         </View>
 

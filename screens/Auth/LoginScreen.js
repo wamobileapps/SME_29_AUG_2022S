@@ -90,7 +90,7 @@ const LoginScreen = props => {
     user.authenticateUser(authDetails, {
       onSuccess: result => {
         setloading(false)
-        console.log('onSuccess', result);
+        // console.log('onSuccess', result);
         // alert("Login Successfully.")
         //ToastAndroid.show("Login Successfully.", ToastAndroid.SHORT);
         if(checkbox){
