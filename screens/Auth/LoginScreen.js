@@ -31,6 +31,10 @@ import UserPool from '../../congnito/UserPool';
 import {CognitoUser, AuthenticationDetails} from 'amazon-cognito-identity-js';
 import Loader from '../../comman/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 const height = Dimensions.get('screen').height;
 
@@ -43,6 +47,12 @@ const LoginScreen = props => {
 
   useEffect(() => {
     onGetIniData();
+    GoogleSignin.configure({
+      //androidClientId: '395419416-papi79sus5c7bpglvp420udhf3td0dh5.apps.googleusercontent.com',
+      //barconexx
+      androidClientId: '597257059947-4gqvem3nnejcpmap19c70cj0ujef5h4d.apps.googleusercontent.com',
+      //iosClientId: 'ADD_YOUR_iOS_CLIENT_ID_HERE',
+  });
   }, []);
 
   const onGetIniData = async() =>{
@@ -54,6 +64,21 @@ const LoginScreen = props => {
           setcheckbox(true)
         }
   } 
+
+  const googleLogin = async() => {
+    
+GoogleSignin.hasPlayServices().then((hasPlayService) => {
+      if (hasPlayService) {
+           GoogleSignin.signIn().then((userInfo) => {
+                     console.log('datattatat--->>>  ', JSON.stringify(userInfo))
+           }).catch((e) => {
+           console.log("ERROR IS: " + JSON.stringify(e));
+           })
+      }
+}).catch((e) => {
+  console.log("ERROR IS: " + JSON.stringify(e));
+})
+  }
 
 
   const onValidateForm = () => {
@@ -217,7 +242,11 @@ const LoginScreen = props => {
           </View>
           <PaddingBox style={scale(20)} />
           <View style={[Styles.alignEvenly, {width: wp(60)}]}>
+            <TouchableOpacity
+            onPress={googleLogin}
+            >
             <Image source={images.GOOGLE} />
+            </TouchableOpacity>
             <Image source={images.FB} />
             <Image source={images.TW} />
           </View>
