@@ -43,49 +43,55 @@ const LoginScreen = props => {
   const [mobile, setmobile] = useState('');
   const [password, setpassword] = useState('');
   const [isEye, setisEye] = useState(true);
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     onGetIniData();
-    GoogleSignin.configure({
-      //androidClientId: '395419416-papi79sus5c7bpglvp420udhf3td0dh5.apps.googleusercontent.com',
-      //barconexx
-      androidClientId: '597257059947-4gqvem3nnejcpmap19c70cj0ujef5h4d.apps.googleusercontent.com',
-      //iosClientId: 'ADD_YOUR_iOS_CLIENT_ID_HERE',
-  });
+    GoogleSignin.configure();
   }, []);
 
-  const onGetIniData = async() =>{
-        let data =await AsyncStorage.getItem("data");
-        if(data != null){
-          let d= JSON.parse(data);
-          setmobile(d.mobile)
-          setpassword(d.password)
-          setcheckbox(true)
-        }
-  } 
+  const GooglesignOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const googleLogin = async() => {
-    
-GoogleSignin.hasPlayServices().then((hasPlayService) => {
-      if (hasPlayService) {
-           GoogleSignin.signIn().then((userInfo) => {
-                     console.log('datattatat--->>>  ', JSON.stringify(userInfo))
-           }).catch((e) => {
-           console.log("ERROR IS: " + JSON.stringify(e));
-           })
+  const onGetIniData = async () => {
+    let data = await AsyncStorage.getItem('data');
+    if (data != null) {
+      let d = JSON.parse(data);
+      setmobile(d.mobile);
+      setpassword(d.password);
+      setcheckbox(true);
+    }
+  };
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('testttt ---> ', userInfo)
+    } catch (error) {
+      console.log('testttt Error ---> ', error)
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
       }
-}).catch((e) => {
-  console.log("ERROR IS: " + JSON.stringify(e));
-})
-  }
-
+    }
+  };
 
   const onValidateForm = () => {
     if (mobile.trim() == '') {
       alert('Please enter phone number');
       return false;
-    }  else if (password.trim() == '') {
+    } else if (password.trim() == '') {
       alert('Please enter password');
       return false;
     } else {
@@ -94,14 +100,12 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
   };
 
   const onLoginUserWithAWS = () => {
-     
     let isValid = onValidateForm();
     if (!isValid) {
       return;
     }
-    setloading(true)
+    setloading(true);
 
-    
     const user = new CognitoUser({
       Username: mobile,
       Pool: UserPool,
@@ -114,38 +118,34 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
 
     user.authenticateUser(authDetails, {
       onSuccess: result => {
-        setloading(false)
+        setloading(false);
         // console.log('onSuccess', result);
         // alert("Login Successfully.")
         //ToastAndroid.show("Login Successfully.", ToastAndroid.SHORT);
-        if(checkbox){
-          let data={
+        if (checkbox) {
+          let data = {
             mobile,
-            password
-          }
-            AsyncStorage.setItem("data",JSON.stringify(data))
-        } 
-        props.navigation.navigate(navigation.BottomTabs, result)
+            password,
+          };
+          AsyncStorage.setItem('data', JSON.stringify(data));
+        }
+        props.navigation.navigate(navigation.BottomTabs, result);
       },
       onFailure: err => {
         console.log('====================================');
         console.log(err);
         console.log('====================================');
-        if(err.code == "UserNotConfirmedException"){
-          alert("Please contact to Admin. User is not verifyed.")
+        if (err.code == 'UserNotConfirmedException') {
+          alert('Please contact to Admin. User is not verifyed.');
+        } else if (err.code == 'NotAuthorizedException') {
+          alert('Please enter valid password.');
+        } else {
+          alert(err.message);
         }
-        else if(err.code == "NotAuthorizedException"){
-          alert("Please enter valid password.")
-        }else{
-          alert(err.message)
-
-        }
-        setloading(false)
+        setloading(false);
       },
     });
   };
-    
-
 
   return (
     <View style={Styles.container}>
@@ -154,15 +154,13 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
       <ImageBackground
         source={images.BACKGROUD}
         style={styles.imageBg}
-        resizeMode="stretch"
-      >
+        resizeMode="stretch">
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: 'center',
             justifyContent: 'center',
-          }}
-        >
+          }}>
           <PaddingBox style={hp(8)} />
           <Image source={images.LOGO} style={styles.imageLogo} />
           <PaddingBox style={scale(10)} />
@@ -178,7 +176,7 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
             placeholder={'Your phone number'}
             keyboardType="phone-pad"
             value={mobile}
-            onChangeText={(t)=>setmobile(t)}
+            onChangeText={t => setmobile(t)}
           />
           <PaddingBox style={scale(20)} />
           <TextInputView
@@ -186,17 +184,17 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
             heading="Password"
             secureTextEntry={isEye}
             rightIcon={true}
-            onChangeSecureText={()=>setisEye(!isEye)}
+            onChangeSecureText={() => setisEye(!isEye)}
             placeholder={'Enter your password'}
             value={password}
-            onChangeText={(t)=>setpassword(t)}
+            onChangeText={t => setpassword(t)}
           />
           <PaddingBox style={scale(20)} />
           <Buttons
             name="Login"
             onPress={
               () => {
-                onLoginUserWithAWS()
+                onLoginUserWithAWS();
               }
               // props.navigation.navigate(navigation.RagistrationScreen)
             }
@@ -234,18 +232,15 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
                 paddingHorizontal: 10,
                 color: '#555252',
                 ...Styles.text14M,
-              }}
-            >
+              }}>
               Or Sign up With
             </Text>
             <Image source={images.RIGHTLINE} />
           </View>
           <PaddingBox style={scale(20)} />
           <View style={[Styles.alignEvenly, {width: wp(60)}]}>
-            <TouchableOpacity
-            onPress={googleLogin}
-            >
-            <Image source={images.GOOGLE} />
+            <TouchableOpacity onPress={signIn}>
+              <Image source={images.GOOGLE} />
             </TouchableOpacity>
             <Image source={images.FB} />
             <Image source={images.TW} />
@@ -258,8 +253,7 @@ GoogleSignin.hasPlayServices().then((hasPlayService) => {
                 style={{color: color.primary}}
                 onPress={() =>
                   props.navigation.navigate(navigation.RagistrationScreen)
-                }
-              >
+                }>
                 {` `} Sign UP
               </Text>
             </Text>

@@ -1,4 +1,4 @@
-package com.sme.newarchitecture;
+package com.smemedicine.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.sme.BuildConfig;
-import com.sme.newarchitecture.components.MainComponentsRegistry;
-import com.sme.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.smemedicine.BuildConfig;
+import com.smemedicine.newarchitecture.components.MainComponentsRegistry;
+import com.smemedicine.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
