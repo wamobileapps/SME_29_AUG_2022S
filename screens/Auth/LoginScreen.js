@@ -68,10 +68,86 @@ const LoginScreen = props => {
     }
   };
 
+  // const _signIn = async () => {
+  //   try {
+  //   await GoogleSignin.hasPlayServices();
+  //   const userInfo = await GoogleSignin.signIn();
+  //   if (userInfo) {
+  //   const {accessToken} = await GoogleSignin.getTokens();
+
+  // //   var myHeaders = new Headers();
+  // // myHeaders.append("Content-Type", "application/json");
+  // // Authorization: Bearer, $`accessToken`,
+
+  // //   var requestOptions = {
+  // //     method: 'GET',
+  // //     headers: myHeaders,
+  // //   };
+
+  // //   const data = await fetch('https://people.googleapis.com/v1/people/${ userInfo.user.id }?personFields=genders,birthdays')
+  // //       .then(response => response.json())
+  // //     if (data.length != 0) {
+  // //       dispatch({
+  // //         type: ADD_PRESCRIPTION_SUCCESS,
+  // //         payload: data,
+  // //       });
+  // //     } else {
+  // //       dispatch({
+  // //         type: ADD_PRESCRIPTION__FAIL,
+  // //         payload: data,
+  // //       });
+  // //     }
+    
+    
+    
+    
+  //   axios({
+  //   method: 'GET',
+  //   headers: {
+  //   Authorization: Bearer ${accessToken},
+  //   },
+  //   url: https://people.googleapis.com/v1/people/${ userInfo.user.id }?personFields=genders,birthdays,
+  //   })
+  //   .then(function(response) {
+  //   // handle success
+  //   console.log(response);
+  //   // console.log(response.data.birthdays[0].date);
+  //   //console.log(response.data.genders[0].formattedValue);
+  //   })
+  //   .catch(function(error) {
+  //   // handle error
+  //   console.log(error);
+  //   });
+  //   }
+  //   } catch (error) {
+  //   switch (error.code) {
+  //   case statusCodes.SIGN_IN_CANCELLED:
+  //   // sign in was cancelled
+  //   Alert.alert('cancelled');
+  //   break;
+  //   case statusCodes.IN_PROGRESS:
+  //   // operation (eg. sign in) already in progress
+  //   Alert.alert('in progress');
+  //   break;
+  //   case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+  //   // android only
+  //   Alert.alert('play services not available or outdated');
+  //   break;
+  //   default:
+  //   Alert.alert('Something went wrong', error.toString());
+  //   }
+  //   }
+  //   };
+
+
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      if(userInfo){
+        const accessToken = await GoogleSignin.getTokens();
+        console.log('token------>>>>>', accessToken);
+      }
       console.log('testttt ---> ', userInfo)
     } catch (error) {
       console.log('testttt Error ---> ', error)
